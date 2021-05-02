@@ -6,7 +6,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 
 ### URL Routes:
 
-1. /
+1. /  
    This is the main landing page of the app. Show the Navbar, the animation, the paragraph of text explaining the app, and the footer. Include a "Get Started" button after the paragraph.
 2. /posts  
    This is the page where the user creates posts, and manages existing posts. Show the Navbar, The users existing posts, and a button to create a post.
@@ -45,13 +45,13 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 - Contains optional description field.
 - Contains menu to choose between multiple choice and short answer question.
 - If multiple choice question is selected, users can add and remove multiple choice options.
-- Contians field for Due date, which can be none, costom, or date of posting.
+- Contians field for Due date, which can be none, custom, or date of posting.
 
 7. PostOptions
 
 - Contains checkboxes for all of the user's classes.
 - Contians a field to select the schedule for posting the post, in the form on: \[days\] at \[time\].
-- Contians a field to select the day with options of "every day", "every weekday", or "costom" which shows a list of checkboxes for every day of the week.
+- Contians a field to select the day with options of "every day", "every weekday", or "custom" which shows a list of checkboxes for every day of the week.
 - Contains a time input to select the time that the post is posted.
 
 8. AddDate
