@@ -65,21 +65,24 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 
 ### Structure:
 
-- Express Router for api routes for managing posts.
-- Node-schedule service for reading the database and making post requests to Google Classroom.
+- Express Router for api routes for managing posts and makes GET requests to Google Classroom.
+- Node-schedule service for reading the database and making POST requests to Google Classroom.
 - The Express routes write to and read from the database and the node-schedule service reads from the database and uses that data to make requests to the Google Classroo API.
 
 ### Postgres Tables:
 
 1. Users
    - id - the Google id of the user
-   - refresh
+   - refresh_token - the refresh token that is obtained when the user signs in.
 2. Sessions
    - stores the sessions and is automatically managed with the connect-pg-simple and express-session npm packages.
 3. Announcements
+   - announcement_id - primary key unique identifier of the announcement.
+   - user_id - foreign key Google id of the user who posts tbe announcement.
+   - course_ids - array of courseids for the courses that the announcement is posted to
    - title - the title of the annoucement only used in the app, not in Google Classroom.
-   - scheduledTime - time to post the announcement
-   -
+   - announcement_text - the text of the announcement.
+   - scheduled_time - time to post the announcement.
 
 ### URL Routes:
 
