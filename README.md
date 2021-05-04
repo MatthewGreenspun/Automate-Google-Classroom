@@ -15,7 +15,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 
 1. Navbar
 
-   - Left side contains name of app\(tbd\).
+   - Left side contains name of app \(tbd\).
    - Clicking on left side redirects to the landing page.
    - Right Side contains "Sign in with Google" button if not signed in.
    - Right Side contains user's display name and profile picture in a box if signed in. When this box is clicked, "Sign out" button drops down.
@@ -45,7 +45,8 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - Contains optional description field.
    - Contains menu to choose between multiple choice and short answer question.
    - If multiple choice question is selected, users can add and remove multiple choice options.
-   - Contians field for Due date, which can be none, custom, or date of posting.
+   - Contians field for Due Date, which can be none, custom, or date of posting.
+   - Contians field for Due Time, which must be specified if Due Date is not none.
 
 7. PostOptions
 
@@ -83,6 +84,31 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - title - the title of the annoucement only used in the app, not in Google Classroom.
    - announcement_text - the text of the announcement.
    - scheduled_time - time to post the announcement.
+4. Short_Answer_Questions
+   - question_id - primary key unique identifier of the announcement.
+   - user_id - foreign key Google id of the user who posts tbe announcement.
+   - course_ids - array of courseids for the courses that the announcement is posted to
+   - topic_id - id of the topic to post the question to. It is nullable.
+   - title - the title of the question used on Google Classroom.
+   - description - the description of the question. It is nullable.
+   - scheduled_time - time to post the question.
+   - due_date - date to post the question. stored as VARCHAR\(10\) in form yyyy-mm-dd. It is nullable if due_time is nullable.
+   - due_time - time to opst the question. stored as VARCHAR\(5\) in form hh-mm. It is nullable if due_date is nullable.
+   - submission_modification_mode - decides if answers can be modified after submitting. It is nullable.
+   - max_points - maximum number of points that are possible to receive. It is nullable.
+5. Multiple_Choice_Questions
+   - question_id - primary key unique identifier of the announcement.
+   - user_id - foreign key Google id of the user who posts tbe announcement.
+   - course_ids - array of courseids for the courses that the announcement is posted to
+   - topic_id - id of the topic to post the question to. It is nullable.
+   - title - the title of the question used on Google Classroom.
+   - description - the description of the question. It is nullable.
+   - scheduled_time - time to post the question.
+   - due_date - date to post the question. stored as VARCHAR\(10\) in form yyyy-mm-dd. It is nullable if due_time is nullable.
+   - due_time - time to opst the question. stored as VARCHAR\(5\) in form hh-mm. It is nullable if due_date is nullable.
+   - submission_modification_mode - decides if answers can be modified after submitting. It is nullable.
+   - max_points - maximum number of points that are possible to receive. It is nullable.
+   - choices - array of possible choices for the question.
 
 ### URL Routes:
 
