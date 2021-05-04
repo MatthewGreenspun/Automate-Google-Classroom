@@ -31,15 +31,21 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 
 4. Footer
 
-   - Contains copyright of website.
+   - Contains copyright of the website.
 
-5. CreateAnnouncement
+5. Post
+
+   - Shows the information returned from the /posts backend route in a clean, organized way.
+   - Contains the title of the post and a different icon based on if the post is an announcement or a question.
+   - When this component is clicked, it changes into the CreateAnnouncement component or the CreateQuestion component based on what type it is.
+
+6. CreateAnnouncement
 
    - Contains required title field, which turns red and shows error message if left blank. This title is not shown on Google Classroom, but is show on this app.
    - Contains required text field, titled "Announce something to your class", which turns red and shows error message if left blank.
    - Contains the PostOptions component below the text field.
 
-6. CreateQuestion
+7. CreateQuestion
 
    - Contians required title field, which turns red and shows error message if left blank. This title is displayed on Google Classroom.
    - Contains optional description field.
@@ -48,14 +54,14 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - Contians field for Due Date, which can be none, custom, or date of posting.
    - Contians field for Due Time, which must be specified if Due Date is not none.
 
-7. PostOptions
+8. PostOptions
 
    - Contains checkboxes for all of the user's classes.
    - Contians a field to select the schedule for posting the post, in the form on: \[days\] at \[time\].
    - Contians a field to select the day with options of "every day", "every weekday", or "custom" which shows a list of checkboxes for every day of the week.
    - Contains a time input to select the time that the post is posted.
 
-8. AddDate
+9. AddDate
 
    - Used for adding dates to automated posts. For example, making the title of each question be that day's date.
    - Contains checkbox with lable "Use a date".
@@ -117,3 +123,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - Uses passport.authenticate method with Google strategy which redirects user to the sign in with google oauth page, where they can select their google accound.
    - Scopes are profile, email, classroom announcements, classroom courses, classroom coursework.
    - Google redirects users to /posts route after user signs in.
+
+2. /posts
+   - Uses passport.authenticate method to make sure that the user accessing the route is authenticated.
+   - Queries all the information from the Announcements, Short_Answer_Questions, and Multiple_Choice_Questions tables and sends it to the frontend.
