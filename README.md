@@ -98,7 +98,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - title - the title of the question used on Google Classroom.
    - description - the description of the question. It is nullable.
    - scheduled_time - time to post the question.
-   - due_date - date to post the question. stored as VARCHAR\(10\) in form yyyy-mm-dd. It is nullable if due_time is nullable.
+   - due_date - date to post the question. stored as VARCHAR\(10\) in form yyyy-mm-dd or "DAY-POSTED". It is nullable if due_time is nullable.
    - due_time - time to opst the question. stored as VARCHAR\(5\) in form hh-mm. It is nullable if due_date is nullable.
    - submission_modification_mode - decides if answers can be modified after submitting. It is nullable.
    - max_points - maximum number of points that are possible to receive. It is nullable.
