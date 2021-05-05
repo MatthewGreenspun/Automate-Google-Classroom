@@ -1,15 +1,97 @@
-import { AppBar, Toolbar, Button } from "@material-ui/core";
+import { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Link,
+  Box,
+  Avatar,
+  Typography,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+interface Props {
+  user: null | {
+    displayName: string;
+    profilePicture: string;
+  };
+}
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    title: {
+      flexGrow: 1,
+      color: "white",
+    },
+    profileBox: {
+      cursor: "pointer",
+    },
+    profilePicture: {
+      marginLeft: "9px",
+    },
+  })
+);
+const Navbar: React.FC<Props> = ({ user }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-interface Props {}
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-const Navbar: React.FC<Props> = () => {
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
-        <h1 style={{ flexGrow: 1 }}>Automate Google Classroom</h1>
-        <Button variant="contained" color="secondary" href="/login">
-          Sign in With Google
-        </Button>
+        <Link
+          variant="h1"
+          underline="none"
+          href="/"
+          color="textPrimary"
+          className={classes.title}
+        >
+          Automate Google Classroom
+        </Link>
+        {!user && (
+          <Button variant="contained" color="primary" href="/login">
+            Sign in With Google
+          </Button>
+        )}
+        {user && (
+          <>
+            <Box
+              display="flex"
+              alignItems="center"
+              border="1px solid white"
+              borderRadius={4}
+              padding={1}
+              onClick={handleClick}
+              className={classes.profileBox}
+            >
+              <Typography>{user.displayName}</Typography>
+              <Avatar
+                alt="user profile picture"
+                src={user.profilePicture}
+                className={classes.profilePicture}
+              />
+            </Box>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => (window.location.href = "/posts")}>
+                My posts
+              </MenuItem>
+              <MenuItem onClick={() => (window.location.href = "/logout")}>
+                Logout
+              </MenuItem>
+            </Menu>
+          </>
+        )}
       </Toolbar>
     </AppBar>
   );

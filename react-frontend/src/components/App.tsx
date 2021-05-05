@@ -8,6 +8,15 @@ import { createMuiTheme } from "@material-ui/core/styles";
 
 function App() {
   const theme = createMuiTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 770,
+        lg: 1280,
+        xl: 1920,
+      },
+    },
     palette: {
       primary: {
         light: "#4285f4",
@@ -23,6 +32,13 @@ function App() {
       },
     },
   });
+  theme.typography.h1 = {
+    fontSize: "1rem",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "2.5rem",
+    },
+    color: "#fff",
+  };
 
   return (
     <Router>
@@ -33,7 +49,13 @@ function App() {
           justifyContent="center"
           flexDirection="column"
         >
-          <Navbar />
+          <Navbar
+            user={{
+              displayName: "Matthew",
+              profilePicture:
+                "https://lh3.googleusercontent.com/ogw/ADGmqu-d0sqos9qecoAwT5t59VYBZcPGQVOc02OJt6Ki0g=s32-c-mo",
+            }}
+          />
           <Switch>
             <Route path="/login">
               <h1>failure to log in</h1>
