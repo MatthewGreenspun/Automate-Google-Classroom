@@ -79,6 +79,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 - Manages requests to the backend.
 - Contains button for user to create a new post which drops down a menu with options of Announcement and Assignment.
 - Manages turning Post components into CreateAnnouncement or CreateQuestion components when the post is clicked.
+- If the user has no courses, display a message that tells them to make one before creating any posts.
 
 ## Node Backend
 
