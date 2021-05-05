@@ -68,6 +68,18 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - If checkbox is clicked, show drop down of different date formats such as dayofweek-month-day, month-day, month-day-year, dayofweek-month-day-year.
    - Under the selected option is an example of how that option would look. For example if dayofweek-month-day is selected, "Monday, May 3rd" is displayed.
 
+10. Home
+
+- Wraps all of the components that are shown on the / url.
+- Centers all of the content horizontally.
+
+11. Posts
+
+- Wraps all of the components that are shown on the /posts url.
+- Manages requests to the backend.
+- Contains button for user to create a new post which drops down a menu with options of Announcement and Assignment.
+- Manages turning Post components into CreateAnnouncement or CreateQuestion components when the post is clicked.
+
 ## Node Backend
 
 ### Structure:
