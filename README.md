@@ -89,7 +89,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - course_ids - array of courseids for the courses that the announcement is posted to
    - title - the title of the annoucement only used in the app, not in Google Classroom.
    - announcement_text - the text of the announcement.
-   - scheduled_time - time to post the announcement.
+   - scheduled_time - time to post the announcement. Stored as VARCHAR\(5\) in form hh:mm.
 4. Short_Answer_Questions
    - question_id - primary key unique identifier of the announcement.
    - user_id - foreign key Google id of the user who posts tbe announcement.
@@ -97,9 +97,10 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - topic_id - id of the topic to post the question to. It is nullable.
    - title - the title of the question used on Google Classroom.
    - description - the description of the question. It is nullable.
-   - scheduled_time - time to post the question.
-   - due_date - date to post the question. stored as VARCHAR\(10\) in form yyyy-mm-dd or "DAY-POSTED". It is nullable if due_time is nullable.
-   - due_time - time to opst the question. stored as VARCHAR\(5\) in form hh-mm. It is nullable if due_date is nullable.
+   - posting_days - days of the week to post the question. Stored as array of VARCHAR\(3\).
+   - scheduled_time - time to post the question. Stored as VARCHAR\(5\) in form hh:mm.
+   - due_date - date to post the question. Stored as VARCHAR\(10\) in form yyyy-mm-dd or "DAY-POSTED". It is nullable if due_time is nullable.
+   - due_time - time to post the question. Stored as VARCHAR\(5\) in form hh:mm. It is nullable if due_date is nullable.
    - submission_modification_mode - decides if answers can be modified after submitting. It is nullable.
    - max_points - maximum number of points that are possible to receive. It is nullable.
 5. Multiple_Choice_Questions
@@ -109,9 +110,10 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - topic_id - id of the topic to post the question to. It is nullable.
    - title - the title of the question used on Google Classroom.
    - description - the description of the question. It is nullable.
-   - scheduled_time - time to post the question.
-   - due_date - date to post the question. stored as VARCHAR\(10\) in form yyyy-mm-dd. It is nullable if due_time is nullable.
-   - due_time - time to opst the question. stored as VARCHAR\(5\) in form hh-mm. It is nullable if due_date is nullable.
+   - posting_days - days of the week to post the question. Stored as array of VARCHAR\(3\).
+   - scheduled_time - time to post the question. Stored as VARCHAR\(5\) in form hh:mm.
+   - due_date - date to post the question. Stored as VARCHAR\(10\) in form yyyy-mm-dd or "DAY-POSTED". It is nullable if due_time is nullable.
+   - due_time - time to opst the question. Stored as VARCHAR\(5\) in form hh:mm. It is nullable if due_date is nullable.
    - submission_modification_mode - decides if answers can be modified after submitting. It is nullable.
    - max_points - maximum number of points that are possible to receive. It is nullable.
    - choices - array of possible choices for the question.
