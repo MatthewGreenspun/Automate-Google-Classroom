@@ -13,7 +13,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 
 ### React Components:
 
-1. Navbar
+1. [Navbar](https://github.com/MatthewGreenspun/Automate-Google-Classroom/blob/main/react-frontend/src/components/Navbar.tsx)
 
    - Left side contains name of app \(tbd\).
    - Clicking on left side redirects to the landing page.
@@ -21,7 +21,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - Right Side contains user's display name and profile picture in a box if signed in. When this box is clicked, "Sign out" button drops down.
    - If the user is signed in and on the lading page, clicking the box causes the "My Posts" option to drop down in addition to the "Sign out", which redirects the user to their posts.
 
-2. ClassroomAnimation
+2. [ClassroomAnimation](https://github.com/MatthewGreenspun/Automate-Google-Classroom/blob/main/react-frontend/src/components/ClassroomAnimation.tsx)
 
    - The SVG animation which is meant to look like the Google Classroom UI.
 
@@ -68,12 +68,12 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - If checkbox is clicked, show drop down of different date formats such as dayofweek-month-day, month-day, month-day-year, dayofweek-month-day-year.
    - Under the selected option is an example of how that option would look. For example if dayofweek-month-day is selected, "Monday, May 3rd" is displayed.
 
-10. Home
+10. [Home](https://github.com/MatthewGreenspun/Automate-Google-Classroom/blob/main/react-frontend/src/components/Home.tsx)
 
 - Wraps all of the components that are shown on the / url.
 - Centers all of the content horizontally.
 
-11. Posts
+11. [Posts](https://github.com/MatthewGreenspun/Automate-Google-Classroom/blob/main/react-frontend/src/components/Posts.tsx)
 
 - Wraps all of the components that are shown on the /posts url.
 - Manages requests to the backend.
