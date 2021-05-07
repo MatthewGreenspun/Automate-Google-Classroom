@@ -53,6 +53,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - If multiple choice question is selected, users can add and remove multiple choice options.
    - Contians field for Due Date, which can be none, custom, or date of posting.
    - Contians field for Due Time, which must be specified if Due Date is not none.
+   - Contains field for Topic, which is optional.
 
 8. PostOptions
 
