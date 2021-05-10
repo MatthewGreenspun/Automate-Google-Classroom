@@ -1,21 +1,11 @@
-import {
-  Box,
-  TextField,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-} from "@material-ui/core";
-import { useState } from "react";
+import { Box, TextField } from "@material-ui/core";
+import PostOptions from "./PostOptions";
 
 interface Props {
   courses: { courseId: string; courseName: string }[];
 }
 
 const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
-  const [coursesToPost, setCoursesToPost] = useState(
-    courses.map((course) => ({ isSelected: false, ...course }))
-  );
   return (
     <Box
       maxWidth="800px"
@@ -35,24 +25,7 @@ const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
         rows={4}
         margin="normal"
       />
-      <FormLabel component="legend">For </FormLabel>
-      <FormGroup>
-        {courses.map((course) => (
-          <FormControlLabel
-            label={course.courseName}
-            control={<Checkbox color="primary" />}
-            onChange={() =>
-              setCoursesToPost(
-                coursesToPost.map((courseToPost) =>
-                  courseToPost.courseId === course.courseId
-                    ? { ...courseToPost, isSelected: !courseToPost.isSelected }
-                    : courseToPost
-                )
-              )
-            }
-          />
-        ))}
-      </FormGroup>
+      <PostOptions courses={courses} />
     </Box>
   );
 };
