@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, TextField } from "@material-ui/core";
 import PostOptions from "./PostOptions";
 
@@ -6,6 +7,7 @@ interface Props {
 }
 
 const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
+  const [optionsAreFilledOut, setOptionsAreFilledOut] = useState(false);
   return (
     <Box
       maxWidth="800px"
@@ -16,7 +18,7 @@ const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
       p={2}
       m={2}
     >
-      <TextField label="Title" variant="filled" margin="normal" />
+      <TextField label="Title" variant="filled" margin="normal" fullWidth />
       <TextField
         label="Announce something to your class"
         variant="filled"
@@ -25,7 +27,10 @@ const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
         rows={4}
         margin="normal"
       />
-      <PostOptions courses={courses} />
+      <PostOptions
+        courses={courses}
+        setOptionsAreFilledOut={setOptionsAreFilledOut}
+      />
     </Box>
   );
 };

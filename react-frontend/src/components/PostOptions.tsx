@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
-  Typography,
   TextField,
   FormLabel,
   FormGroup,
@@ -22,12 +22,17 @@ const daysOfTheWeek = [
 
 interface Props {
   courses: { courseId: string; courseName: string }[];
+  setOptionsAreFilledOut: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PostOptions: React.FC<Props> = ({ courses }) => {
+const PostOptions: React.FC<Props> = ({
+  courses,
+  setOptionsAreFilledOut: setReadyToSubmit,
+}) => {
   const [coursesToPost, setCoursesToPost] = useState(
     courses.map((course) => ({ isSelected: false, ...course }))
   );
+
   const [daysToPost, setDaysToPost] = useState([
     "Monday",
     "Tuesday",
@@ -36,7 +41,15 @@ const PostOptions: React.FC<Props> = ({ courses }) => {
     "Friday",
   ]);
   const [dayToPostSelection, setDayToPostSelection] = useState("Every Weekday"); //daysToPost is what is sent to backend. daysToPostSelection is shown in the input
-  const [timeToPost, setTimeToPost] = useState("07:30AM");
+
+  const [timeToPost, setTimeToPost] = useState("07:30:00");
+  useEffect(() => {
+    const hasDaysToPost = daysToPost.length > 0;
+    const hasCoursesToPost = coursesToPost.some(
+      (course) => course.isSelected === true
+    );
+    setReadyToSubmit(!!(hasDaysToPost && hasCoursesToPost && timeToPost));
+  }, [daysToPost, coursesToPost, setReadyToSubmit, timeToPost]);
   return (
     <Box>
       <FormLabel component="legend">For </FormLabel>
