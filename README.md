@@ -104,6 +104,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
    - title - the title of the annoucement only used in the app, not in Google Classroom.
    - announcement_text - the text of the announcement.
    - scheduled_time - time to post the announcement. Stored as VARCHAR\(5\) in form hh:mm.
+   - posting_days - days of the week to post the question. Stored as array of VARCHAR\(3\).
 4. Short_Answer_Questions
    - question_id - primary key unique identifier of the announcement.
    - user_id - foreign key Google id of the user who posts tbe announcement.
