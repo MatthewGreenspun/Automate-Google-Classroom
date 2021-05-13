@@ -39,6 +39,12 @@ function App() {
     },
     color: "#fff",
   };
+  theme.typography.body1 = {
+    fontSize: "1rem",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.2rem",
+    },
+  };
 
   return (
     <Router>
