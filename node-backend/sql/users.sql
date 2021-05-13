@@ -1,3 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE users()
+CREATE TABLE users(
+  user_id VARCHAR(500) NOT NULL,
+  refresh_token VARCHAR(500) NOT NULL;
+);
