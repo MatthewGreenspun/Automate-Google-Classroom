@@ -25,7 +25,7 @@ This is a web app that allows users to schedule automatic posting of repeated Go
 
    - The SVG animation which is meant to look like the Google Classroom UI.
 
-3. DescriptionParagraph
+3. [DescriptionParagraph](https://github.com/MatthewGreenspun/Automate-Google-Classroom/blob/main/react-frontend/src/components/DescriptionParagraph.tsx)
 
    - Paragraph containing brief desription of the app and its functions. "Get Started" button is below the paragraph.
 
