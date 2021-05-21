@@ -9,7 +9,6 @@ import path from "path";
 import "./passportFunctions";
 
 const app = express();
-
 app.use(express.static(path.join(__dirname, "../", "build")));
 app.use(cors());
 app.use(express.json());
@@ -21,8 +20,8 @@ app.use(
     }),
     secret: process.env.COOKIE_SECRET as string,
     resave: false,
-    saveUninitialized: true, //possibly change to false in the future
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1 day
+    saveUninitialized: true, //possibly change in the future
+    cookie: { maxAge: 60 }, // currently 1 minute, change to much longer in prod
   })
 );
 app.use(passport.initialize());
@@ -45,9 +44,19 @@ app.get(
     scope: scopes,
     accessType: "offline",
     prompt: "consent",
-    successRedirect: "/posts",
+    successRedirect: "/googlecallback",
     failureRedirect: "/",
   })
+);
+
+app.get(
+  "/googlecallback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => {
+    req.session.save(() => {
+      res.redirect("/posts");
+    });
+  }
 );
 
 app.get("/posts", (req, res) => {
@@ -62,5 +71,4 @@ app.get("/logout", (req, res) => {
 });
 
 app.use("/api/v1", userRouter);
-
 export default app;
