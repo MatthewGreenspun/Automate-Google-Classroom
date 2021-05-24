@@ -44,8 +44,14 @@ passport.use(
       } else {
         try {
           pool.query(
-            "INSERT INTO users (user_id, refresh_token) VALUES ($1, $2)",
-            [profile.id, refreshToken]
+            "INSERT INTO users (user_id, refresh_token, display_name, profile_picture_link, email) VALUES ($1, $2, $3, $4, $5)",
+            [
+              profile.id,
+              refreshToken,
+              profile.displayName,
+              profile.photos && profile.photos[0]?.value, //make sure photo exists
+              profile.emails && profile.emails[0]?.value, //make sure email exists
+            ]
           );
         } catch (err) {
           console.log("error when user does not exist");
