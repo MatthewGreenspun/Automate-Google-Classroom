@@ -3,6 +3,7 @@ const cors = require("cors");
 import express from "express";
 import session from "express-session";
 import userRouter from "./routes/user";
+import authRouter from "./routes/auth";
 import passport from "passport";
 import pool from "../sql/Pool";
 import path from "path";
@@ -21,7 +22,7 @@ app.use(
     secret: process.env.COOKIE_SECRET as string,
     resave: false,
     saveUninitialized: true, //possibly change in the future
-    cookie: { maxAge: 60 }, // currently 1 minute, change to much longer in prod
+    cookie: { maxAge: 1000 * 60 }, // currently 1 minute, change to much longer in prod
   })
 );
 app.use(passport.initialize());
@@ -31,44 +32,13 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../", "build", "index.html"));
 });
 
-const scopes = [
-  "profile",
-  "email",
-  "https://www.googleapis.com/auth/classroom.courses.readonly",
-  "https://www.googleapis.com/auth/classroom.announcements",
-  "https://www.googleapis.com/auth/classroom.coursework.students",
-];
-app.get(
-  "/login",
-  passport.authenticate("google", {
-    scope: scopes,
-    accessType: "offline",
-    prompt: "consent",
-    successRedirect: "/googlecallback",
-    failureRedirect: "/",
-  })
-);
-
-app.get(
-  "/googlecallback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
-    req.session.save(() => {
-      res.redirect("/posts");
-    });
-  }
-);
-
 app.get("/posts", (req, res) => {
   if (req.user)
     res.sendFile(path.join(__dirname, "../", "build", "index.html"));
-  else res.redirect("/login");
+  else res.redirect("/auth/login");
 });
 
-app.get("/logout", (req, res) => {
-  req.logout();
-  res.redirect("/");
-});
+app.use("/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 
-app.use("/api/v1", userRouter);
 export default app;
