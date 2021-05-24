@@ -22,7 +22,7 @@ app.use(
     secret: process.env.COOKIE_SECRET as string,
     resave: false,
     saveUninitialized: true, //possibly change in the future
-    cookie: { maxAge: 1000 * 60 }, // currently 1 minute, change to much longer in prod
+    cookie: { maxAge: 1000 * 60 * 10 }, // currently 10 minute, change to much longer in prod
   })
 );
 app.use(passport.initialize());
