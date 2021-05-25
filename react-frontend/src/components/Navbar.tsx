@@ -55,7 +55,7 @@ const Navbar: React.FC<Props> = ({ user }) => {
           Automate Google Classroom
         </Link>
         {!user && (
-          <Button variant="contained" color="primary" href="/login">
+          <Button variant="contained" color="primary" href="/auth/login">
             Sign in With Google
           </Button>
         )}
@@ -86,7 +86,7 @@ const Navbar: React.FC<Props> = ({ user }) => {
               <MenuItem onClick={() => (window.location.href = "/posts")}>
                 My posts
               </MenuItem>
-              <MenuItem onClick={() => (window.location.href = "/logout")}>
+              <MenuItem onClick={() => (window.location.href = "/auth/logout")}>
                 Logout
               </MenuItem>
             </Menu>

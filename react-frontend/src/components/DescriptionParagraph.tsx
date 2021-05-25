@@ -10,7 +10,7 @@ const DescriptionParagraph = () => {
         these questions or announcements, get started by clicking below. It only
         takes a few minutes to set up.
       </Typography>
-      <Button href="/login" color="primary" variant="contained">
+      <Button href="/auth/login" color="primary" variant="contained">
         Get started!
       </Button>
     </Box>
