@@ -4,10 +4,15 @@ import { checkAuthorization } from "../middleware/checkAuthorization";
 
 const router = express.Router();
 
-router.get("/me", checkAuthorization, (req, res) => {
+router.get("/me", (req, res) => {
   res.send({
-    displayName: (req.user as DatabaseUserData).display_name,
-    profilePictureLink: (req.user as DatabaseUserData).profile_picture_link,
+    user: req.user
+      ? {
+          displayName: (req.user as DatabaseUserData).display_name,
+          profilePictureLink: (req.user as DatabaseUserData)
+            .profile_picture_link,
+        }
+      : null,
   });
 });
 
