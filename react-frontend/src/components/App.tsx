@@ -5,6 +5,8 @@ import Posts from "./Posts";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Box, ThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
+import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import axios from "axios";
 
 function App() {
   const theme = createMuiTheme({
@@ -46,35 +48,47 @@ function App() {
     },
   };
 
+  const { data, isLoading } = useQuery("user", async () => {
+    const { data } = await axios.get("http://localhost:8080/api/v1/users/me");
+    return data;
+  });
+
+  const queryClient = new QueryClient();
+
   return (
     <Router>
-      <ThemeProvider theme={theme}>
-        <Box
-          id="app"
-          display="flex"
-          justifyContent="center"
-          flexDirection="column"
-        >
-          <Navbar
-            user={{
-              displayName: "Matthew",
-              profilePicture:
-                "https://lh3.googleusercontent.com/ogw/ADGmqu-d0sqos9qecoAwT5t59VYBZcPGQVOc02OJt6Ki0g=s32-c-mo",
-            }}
-          />
-          <Switch>
-            <Route path="/login">
-              <h1>failure to log in</h1>
-            </Route>
-            <Route path="/posts">
-              <Posts />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
-        </Box>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <Box
+            id="app"
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+          >
+            <Navbar
+              user={
+                isLoading
+                  ? null
+                  : (data.user as unknown as {
+                      displayName: string;
+                      profilePictureLink: string;
+                    } | null)
+              }
+            />
+            <Switch>
+              <Route path="/login">
+                <h1>failure to log in</h1>
+              </Route>
+              <Route path="/posts">
+                <Posts />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </Box>
+        </ThemeProvider>
+      </QueryClientProvider>
     </Router>
   );
 }

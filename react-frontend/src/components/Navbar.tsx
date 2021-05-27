@@ -11,12 +11,14 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+
 interface Props {
   user: null | {
     displayName: string;
-    profilePicture: string;
+    profilePictureLink: string;
   };
 }
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
@@ -31,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+
 const Navbar: React.FC<Props> = ({ user }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -42,6 +45,7 @@ const Navbar: React.FC<Props> = ({ user }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
@@ -73,7 +77,7 @@ const Navbar: React.FC<Props> = ({ user }) => {
               <Typography>{user.displayName}</Typography>
               <Avatar
                 alt="user profile picture"
-                src={user.profilePicture}
+                src={user.profilePictureLink}
                 className={classes.profilePicture}
               />
             </Box>

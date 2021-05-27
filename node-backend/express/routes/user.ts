@@ -5,6 +5,7 @@ import { checkAuthorization } from "../middleware/checkAuthorization";
 const router = express.Router();
 
 router.get("/me", (req, res) => {
+  console.log("me route requested");
   res.send({
     user: req.user
       ? {
