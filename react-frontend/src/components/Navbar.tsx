@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     profileBox: {
       cursor: "pointer",
+      backgroundColor: "#37474f",
     },
     profilePicture: {
       marginLeft: "9px",
@@ -77,7 +78,6 @@ const Navbar: React.FC<Props> = ({ user }) => {
             <Box
               display="flex"
               alignItems="center"
-              border="1px solid white"
               borderRadius={4}
               padding={1}
               onClick={handleClick}
