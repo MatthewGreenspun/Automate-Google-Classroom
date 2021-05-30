@@ -5,7 +5,6 @@ import { checkAuthorization } from "../middleware/checkAuthorization";
 const router = express.Router();
 
 router.get("/me", (req, res) => {
-  console.log("me route requested");
   res.send({
     user: req.user
       ? {
@@ -32,7 +31,9 @@ router.get("/courses", checkAuthorization, async (req, res) => {
     data: { courses },
   } = await classroom.courses.list({});
 
-  res.send(courses);
+  res.send(
+    courses?.map((course) => ({ courseId: course.id, courseName: course.name }))
+  );
 });
 
 export default router;

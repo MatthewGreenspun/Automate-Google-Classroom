@@ -1,9 +1,18 @@
 import { useState } from "react";
-import { Box, AppBar, Fab } from "@material-ui/core";
+import {
+  Box,
+  AppBar,
+  Fab,
+  LinearProgress,
+  Typography,
+  Link,
+} from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CreateAnnouncement from "./CreateAnnouncement";
+import { useQuery, QueryClientProvider, QueryClient } from "react-query";
+import axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: "5px",
       cursor: "pointer",
     },
+    progressIndicator: {
+      height: "5px",
+      width: "100%",
+    },
   })
 );
 
@@ -32,41 +45,72 @@ const Posts: React.FC = () => {
   const classes = useStyles();
 
   const [isCreatingPost, setIsCreatingPost] = useState(false);
+  const { data, isLoading } = useQuery("courses", async () => {
+    const { data } = await axios.get(
+      "http://localhost:8080/api/v1/users/courses"
+    );
+    return data;
+  });
+
+  const queryClient = new QueryClient();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      flexDirection="column"
-      alignItems="center"
-    >
-      <AppBar color="secondary" position="relative" className={classes.appBar}>
-        {isCreatingPost ? (
-          <ArrowBackIcon
-            className={classes.arrowBackIcon}
-            onClick={() => setIsCreatingPost(false)}
-          />
-        ) : (
-          <Fab
+    <QueryClientProvider client={queryClient}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <AppBar
+          color="secondary"
+          position="relative"
+          className={classes.appBar}
+        >
+          {isCreatingPost ? (
+            <ArrowBackIcon
+              className={classes.arrowBackIcon}
+              onClick={() => setIsCreatingPost(false)}
+            />
+          ) : (
+            <Fab
+              color="primary"
+              variant="extended"
+              className={classes.newPostButton}
+              onClick={() => setIsCreatingPost(true)}
+            >
+              <AddIcon className={classes.addIcon} /> New Post
+            </Fab>
+          )}
+        </AppBar>
+        {isCreatingPost && isLoading && (
+          <LinearProgress
             color="primary"
-            variant="extended"
-            className={classes.newPostButton}
-            onClick={() => setIsCreatingPost(true)}
-          >
-            <AddIcon className={classes.addIcon} /> New Post
-          </Fab>
+            className={classes.progressIndicator}
+          />
         )}
-      </AppBar>
-
-      {isCreatingPost && (
-        <CreateAnnouncement
-          courses={[
-            { courseId: "23432124", courseName: "Global History P1" },
-            { courseId: "2342379", courseName: "Global History P5" },
-          ]}
-        />
-      )}
-    </Box>
+        {isCreatingPost && !isLoading && data.length === 0 && (
+          <Typography variant="h5" style={{ marginTop: "10px" }}>
+            Looks like you don't have any classes on Google Classroom. Try
+            Creating one{" "}
+            <Link href="https://classroom.google.com" target="_blank">
+              here
+            </Link>{" "}
+            and then come back.
+          </Typography>
+        )}
+        {isCreatingPost && !isLoading && data.length > 0 && (
+          <CreateAnnouncement
+            courses={
+              data as {
+                courseId: string;
+                courseName: string;
+              }[]
+            }
+          />
+        )}
+      </Box>
+    </QueryClientProvider>
   );
 };
 
