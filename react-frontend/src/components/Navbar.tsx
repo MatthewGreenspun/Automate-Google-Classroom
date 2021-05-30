@@ -11,7 +11,6 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-
 interface Props {
   user: null | {
     displayName: string;
@@ -30,6 +29,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     profilePicture: {
       marginLeft: "9px",
+    },
+    googleLogo: {
+      marginRight: "9px",
+      height: theme.spacing(4),
+      width: theme.spacing(4),
     },
   })
 );
@@ -59,8 +63,13 @@ const Navbar: React.FC<Props> = ({ user }) => {
           Automate Google Classroom
         </Link>
         {!user && (
-          <Button variant="contained" color="primary" href="/auth/login">
-            Sign in With Google
+          <Button variant="contained" color="secondary" href="/auth/login">
+            <Avatar
+              alt="user profile picture"
+              src="/google-logo.png"
+              className={classes.googleLogo}
+            />
+            Sign in
           </Button>
         )}
         {user && (
