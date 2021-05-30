@@ -1,6 +1,7 @@
 import express from "express";
 import { google } from "googleapis";
 import { checkAuthorization } from "../middleware/checkAuthorization";
+import pool from "../../sql/Pool";
 
 const router = express.Router();
 
@@ -33,6 +34,34 @@ router.get("/courses", checkAuthorization, async (req, res) => {
 
   res.send(
     courses?.map((course) => ({ courseId: course.id, courseName: course.name }))
+  );
+});
+
+router.get("/announcements", checkAuthorization, async (req, res) => {
+  const { rows }: { rows: DatabaseAnnouncementData[] } = await pool.query(
+    "SELECT announcement_id, course_ids, title, announcement_text, scheduled_time, posting_days FROM announcements WHERE user_id = $1",
+    [(req.user as DatabaseUserData).user_id]
+  );
+
+  res.send(
+    rows.map(
+      //convert to camelCase
+      ({
+        announcement_id,
+        course_ids,
+        title,
+        announcement_text,
+        scheduled_time,
+        posting_days,
+      }) => ({
+        announcementId: announcement_id,
+        courseIds: course_ids,
+        title,
+        announcementText: announcement_text,
+        scheduledTime: scheduled_time,
+        postingDays: posting_days,
+      })
+    )
   );
 });
 
