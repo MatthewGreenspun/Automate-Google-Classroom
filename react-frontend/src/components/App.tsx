@@ -21,7 +21,7 @@ function App() {
     },
     palette: {
       primary: {
-        light: "#4285f4",
+        light: "#80b4ff",
         main: "#4285f4",
         dark: "#0059c1",
         contrastText: "#fff",
@@ -67,7 +67,7 @@ function App() {
           >
             <Navbar
               user={
-                isLoading
+                isLoading || !data
                   ? null
                   : (data.user as unknown as {
                       displayName: string;
