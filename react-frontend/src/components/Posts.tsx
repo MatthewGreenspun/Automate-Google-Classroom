@@ -44,12 +44,24 @@ const Posts: React.FC = () => {
   const classes = useStyles();
 
   const [isCreatingPost, setIsCreatingPost] = useState(false);
-  const { data, isLoading } = useQuery("courses", async () => {
-    const { data } = await axios.get(
-      "http://localhost:8080/api/v1/users/courses"
-    );
-    return data;
-  });
+  const { data: courses, isLoading: coursesIsLoading } = useQuery(
+    "courses",
+    async () => {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/users/courses"
+      );
+      return data;
+    }
+  );
+  const { data: announcements, isLoading: AnnouncementsIsLoading } = useQuery(
+    "announcements",
+    async () => {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/users/announcements"
+      );
+      return data;
+    }
+  );
 
   const queryClient = new QueryClient();
 
@@ -82,39 +94,20 @@ const Posts: React.FC = () => {
             </Fab>
           )}
         </AppBar>
-        {isCreatingPost && isLoading && (
+        {isCreatingPost && coursesIsLoading && (
           <LinearProgress
             color="primary"
             className={classes.progressIndicator}
           />
         )}
 
-        {!isCreatingPost && (
-          <Announcements
-            announcements={[
-              {
-                announcementId: "234232",
-                title: "My First Announcement",
-                announcementText: `my first anouncement. This is a cool announcement.
-                 Automate Google Classroom is the best. I use Automage Google Classroom to post all of my attendance questions. It is so helpful`,
-              },
-              {
-                announcementId: "654902",
-                title: "My Second Announcement",
-                announcementText:
-                  "my second anouncement. This is a cool announcement. Automate Google Classroom is the best",
-              },
-              {
-                announcementId: "298202",
-                title: "My Third Announcement",
-                announcementText:
-                  "my 3rd anouncement. This is a cool announcement. Automate Google Classroom is the best",
-              },
-            ]}
-          />
-        )}
+        {!isCreatingPost &&
+          !AnnouncementsIsLoading &&
+          announcements.length > 0 && (
+            <Announcements announcements={announcements as Announcement[]} />
+          )}
 
-        {isCreatingPost && !isLoading && data.length === 0 && (
+        {isCreatingPost && !coursesIsLoading && courses.length === 0 && (
           <Typography variant="h5" style={{ marginTop: "10px" }}>
             Looks like you don't have any classes on Google Classroom. Try
             Creating one{" "}
@@ -124,10 +117,10 @@ const Posts: React.FC = () => {
             and then come back.
           </Typography>
         )}
-        {isCreatingPost && !isLoading && data.length > 0 && (
+        {isCreatingPost && !coursesIsLoading && courses.length > 0 && (
           <CreateAnnouncement
             courses={
-              data as {
+              courses as {
                 courseId: string;
                 courseName: string;
               }[]
