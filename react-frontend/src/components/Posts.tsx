@@ -11,6 +11,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import CreateAnnouncement from "./CreateAnnouncement";
+import Announcements from "./Announcements";
 import { useQuery, QueryClientProvider, QueryClient } from "react-query";
 import axios from "axios";
 
@@ -89,6 +90,32 @@ const Posts: React.FC = () => {
             className={classes.progressIndicator}
           />
         )}
+
+        {!isCreatingPost && (
+          <Announcements
+            announcements={[
+              {
+                announcementId: "234232",
+                title: "My First Announcement",
+                announcementText: `my first anouncement. This is a cool announcement.
+                 Automate Google Classroom is the best. I use Automage Google Classroom to post all of my attendance questions. It is so helpful`,
+              },
+              {
+                announcementId: "654902",
+                title: "My Second Announcement",
+                announcementText:
+                  "my second anouncement. This is a cool announcement. Automate Google Classroom is the best",
+              },
+              {
+                announcementId: "298202",
+                title: "My Third Announcement",
+                announcementText:
+                  "my 3rd anouncement. This is a cool announcement. Automate Google Classroom is the best",
+              },
+            ]}
+          />
+        )}
+
         {isCreatingPost && !isLoading && data.length === 0 && (
           <Typography variant="h5" style={{ marginTop: "10px" }}>
             Looks like you don't have any classes on Google Classroom. Try
