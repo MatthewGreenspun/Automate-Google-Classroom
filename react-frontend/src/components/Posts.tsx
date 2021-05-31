@@ -56,8 +56,10 @@ const Posts: React.FC<Props> = ({ user }) => {
   const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
-    if (!user) setSessionExpired(true);
+    if (user) setSessionExpired(false);
+    else if (!user) setSessionExpired(true);
   }, [user]);
+
   const { data: courses, isLoading: coursesIsLoading } = useQuery(
     "courses",
     async () => {
@@ -111,6 +113,10 @@ const Posts: React.FC<Props> = ({ user }) => {
         announcements.length > 0 && (
           <Announcements announcements={announcements as Announcement[]} />
         )}
+
+      {!isCreatingPost && (
+        <Announcements announcements={announcements as Announcement[]} />
+      )}
 
       {isCreatingPost && !coursesIsLoading && courses.length === 0 && (
         <Typography variant="h5" style={{ marginTop: "10px" }}>
