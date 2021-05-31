@@ -1,14 +1,12 @@
 import { useState } from "react";
-import {
-  Typography,
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
-  IconButton,
-  Avatar,
-  Collapse,
-} from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import IconButton from "@material-ui/core/IconButton";
+import Avatar from "@material-ui/core/Avatar";
+import Collapse from "@material-ui/core/Collapse";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import AnnouncementOutlinedIcon from "@material-ui/icons/AnnouncementOutlined";
