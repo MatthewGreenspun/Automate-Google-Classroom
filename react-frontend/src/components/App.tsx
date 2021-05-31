@@ -5,7 +5,7 @@ import Posts from "./Posts";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Box, ThemeProvider } from "@material-ui/core";
 import { createMuiTheme } from "@material-ui/core/styles";
-import { useQuery, QueryClient, QueryClientProvider } from "react-query";
+import { useQuery } from "react-query";
 import axios from "axios";
 
 function App() {
@@ -53,42 +53,47 @@ function App() {
     return data;
   });
 
-  const queryClient = new QueryClient();
-
   return (
     <Router>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <Box
-            id="app"
-            display="flex"
-            justifyContent="center"
-            flexDirection="column"
-          >
-            <Navbar
-              user={
-                isLoading || !data
-                  ? null
-                  : (data.user as unknown as {
-                      displayName: string;
-                      profilePictureLink: string;
-                    } | null)
-              }
-            />
-            <Switch>
-              <Route path="/login">
-                <h1>failure to log in</h1>
-              </Route>
-              <Route path="/posts">
-                <Posts />
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>
-            </Switch>
-          </Box>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <ThemeProvider theme={theme}>
+        <Box
+          id="app"
+          display="flex"
+          justifyContent="center"
+          flexDirection="column"
+        >
+          <Navbar
+            user={
+              isLoading || !data
+                ? null
+                : (data.user as unknown as {
+                    displayName: string;
+                    profilePictureLink: string;
+                  } | null)
+            }
+          />
+          <Switch>
+            <Route path="/login">
+              <h1>failure to log in</h1>
+            </Route>
+            <Route path="/posts">
+              <Posts
+                user={
+                  isLoading || !data
+                    ? null
+                    : (data.user as unknown as {
+                        displayName: string;
+                        profilePictureLink: string;
+                      } | null)
+                }
+              />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Box>
+      </ThemeProvider>
     </Router>
   );
 }
