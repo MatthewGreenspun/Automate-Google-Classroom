@@ -4,6 +4,7 @@ import express from "express";
 import session from "express-session";
 import userRouter from "./routes/user";
 import authRouter from "./routes/auth";
+import createPostRouter from "./routes/createPost";
 import passport from "passport";
 import pool from "../sql/Pool";
 import path from "path";
@@ -22,7 +23,7 @@ app.use(
     secret: process.env.COOKIE_SECRET as string,
     resave: false,
     saveUninitialized: true, //possibly change in the future
-    cookie: { maxAge: 1000 * 60 * 10 }, // currently 10 minute, change to much longer in prod
+    cookie: { maxAge: 1000 * 60 * 60 }, // currently 1 hour, change to much longer in prod
   })
 );
 app.use(passport.initialize());
@@ -40,5 +41,6 @@ app.get("/posts", (req, res) => {
 
 app.use("/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/createpost", createPostRouter);
 
 export default app;
