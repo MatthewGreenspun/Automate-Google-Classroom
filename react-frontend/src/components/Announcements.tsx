@@ -29,7 +29,7 @@ const Announcements: React.FC<Props> = ({ announcements }) => {
       width="100%"
       maxWidth="800px"
     >
-      <Typography variant="h2" className={classes.title}>
+      <Typography variant="h3" className={classes.title}>
         Announcements
       </Typography>
       {announcements.map(({ title, announcementText, announcementId }) => (

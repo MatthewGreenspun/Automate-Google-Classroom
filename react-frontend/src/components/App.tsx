@@ -48,10 +48,13 @@ function App() {
     },
   };
 
-  const { data, isLoading } = useQuery("user", async () => {
-    const { data } = await axios.get("http://localhost:8080/api/v1/users/me");
-    return data;
-  });
+  const { data, isLoading } = useQuery<{ user: User | null }>(
+    "user",
+    async (): Promise<{ user: User | null }> => {
+      const { data } = await axios.get("http://localhost:8080/api/v1/users/me");
+      return data;
+    }
+  );
 
   return (
     <Router>
@@ -62,16 +65,7 @@ function App() {
           justifyContent="center"
           flexDirection="column"
         >
-          <Navbar
-            user={
-              isLoading || !data
-                ? null
-                : (data.user as unknown as {
-                    displayName: string;
-                    profilePictureLink: string;
-                  } | null)
-            }
-          />
+          <Navbar user={isLoading || !data ? null : data.user} />
           <Switch>
             <Route path="/login">
               <h1>failure to log in</h1>

@@ -16,10 +16,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 
 interface Props {
-  user: null | {
-    displayName: string;
-    profilePictureLink: string;
-  };
+  user: User | null;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,24 +57,23 @@ const Posts: React.FC<Props> = ({ user }) => {
     else if (!user) setSessionExpired(true);
   }, [user]);
 
-  const { data: courses, isLoading: coursesIsLoading } = useQuery(
+  const { data: courses, isLoading: coursesIsLoading } = useQuery<Course[]>(
     "courses",
-    async () => {
+    async (): Promise<Course[]> => {
       const { data } = await axios.get(
         "http://localhost:8080/api/v1/users/courses"
       );
       return data;
     }
   );
-  const { data: announcements, isLoading: AnnouncementsIsLoading } = useQuery(
-    "announcements",
-    async () => {
-      const { data } = await axios.get(
-        "http://localhost:8080/api/v1/users/announcements"
-      );
-      return data;
-    }
-  );
+  const { data: announcements, isLoading: AnnouncementsIsLoading } = useQuery<
+    Announcement[]
+  >("announcements", async (): Promise<Announcement[]> => {
+    const { data } = await axios.get(
+      "http://localhost:8080/api/v1/users/announcements"
+    );
+    return data;
+  });
 
   return (
     <Box
@@ -111,10 +107,10 @@ const Posts: React.FC<Props> = ({ user }) => {
         !AnnouncementsIsLoading &&
         announcements &&
         announcements.length > 0 && (
-          <Announcements announcements={announcements as Announcement[]} />
+          <Announcements announcements={announcements} />
         )}
 
-      {isCreatingPost && !coursesIsLoading && courses.length === 0 && (
+      {isCreatingPost && !coursesIsLoading && courses && courses.length === 0 && (
         <Typography variant="h5" style={{ marginTop: "10px" }}>
           Looks like you don't have any classes on Google Classroom. Try
           Creating one{" "}
@@ -124,15 +120,10 @@ const Posts: React.FC<Props> = ({ user }) => {
           and then come back.
         </Typography>
       )}
-      {isCreatingPost && !coursesIsLoading && courses.length > 0 && (
+      {isCreatingPost && !coursesIsLoading && courses && courses.length > 0 && (
         <CreateAnnouncement
           setIsCreatingPost={setIsCreatingPost}
-          courses={
-            courses as {
-              courseId: string;
-              courseName: string;
-            }[]
-          }
+          courses={courses}
         />
       )}
       <Snackbar

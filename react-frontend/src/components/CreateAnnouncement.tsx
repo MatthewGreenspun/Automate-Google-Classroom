@@ -10,7 +10,7 @@ import { getUTCDayToPost } from "../utils/getUTCDayToPost";
 
 interface Props {
   setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
-  courses: { courseId: string; courseName: string }[];
+  courses: Course[];
   title?: string;
   announcementText?: string;
   scheduledTime?: string;
@@ -46,7 +46,7 @@ const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
         courseIds: options.coursesToPost,
         title: title.trim(),
         announcementText: announcementText.trim(),
-        postingDays: postingDaysUTC as unknown as string[],
+        postingDays: postingDaysUTC as string[],
         scheduledTime: scheduledTimeUTC,
       });
     }

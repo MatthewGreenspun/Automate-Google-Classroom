@@ -5,6 +5,5 @@ export function numberToStringWeekday(day: number) {
   if (day === 3) return "wed";
   if (day === 4) return "thu";
   if (day === 5) return "fri";
-  if (day === 6) return "sat";
-  return day;
+  return "sat";
 }

@@ -9,6 +9,16 @@ interface Announcement {
   lastPosted?: string;
 }
 
+interface User {
+  displayName: string;
+  profilePictureLink: string;
+}
+
+interface Course {
+  courseId: string;
+  courseName: string;
+}
+
 type WeekDay =
   | "Sun"
   | "Mon"

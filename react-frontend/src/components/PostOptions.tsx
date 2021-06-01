@@ -1,14 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  Box,
-  TextField,
-  FormLabel,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  MenuItem,
-} from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import TextField from "@material-ui/core/TextField";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const daysOfTheWeek = [
   "Sunday",

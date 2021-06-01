@@ -11,10 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 interface Props {
-  user: null | {
-    displayName: string;
-    profilePictureLink: string;
-  };
+  user: User | null;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
