@@ -114,10 +114,6 @@ const Posts: React.FC<Props> = ({ user }) => {
           <Announcements announcements={announcements as Announcement[]} />
         )}
 
-      {!isCreatingPost && (
-        <Announcements announcements={announcements as Announcement[]} />
-      )}
-
       {isCreatingPost && !coursesIsLoading && courses.length === 0 && (
         <Typography variant="h5" style={{ marginTop: "10px" }}>
           Looks like you don't have any classes on Google Classroom. Try
@@ -130,6 +126,7 @@ const Posts: React.FC<Props> = ({ user }) => {
       )}
       {isCreatingPost && !coursesIsLoading && courses.length > 0 && (
         <CreateAnnouncement
+          setIsCreatingPost={setIsCreatingPost}
           courses={
             courses as {
               courseId: string;

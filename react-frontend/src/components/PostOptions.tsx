@@ -21,13 +21,23 @@ const daysOfTheWeek = [
 ];
 
 interface Props {
+  disabled: boolean;
   courses: { courseId: string; courseName: string }[];
   setOptionsAreFilledOut: React.Dispatch<React.SetStateAction<boolean>>;
+  setOptions: React.Dispatch<
+    React.SetStateAction<{
+      daysToPost: string[];
+      timeToPost: string;
+      coursesToPost: string[];
+    }>
+  >;
 }
 
 const PostOptions: React.FC<Props> = ({
+  disabled,
   courses,
   setOptionsAreFilledOut: setReadyToSubmit,
+  setOptions,
 }) => {
   const [coursesToPost, setCoursesToPost] = useState(
     courses.map((course) => ({ isSelected: false, ...course }))
@@ -41,15 +51,23 @@ const PostOptions: React.FC<Props> = ({
     "Friday",
   ]);
   const [dayToPostSelection, setDayToPostSelection] = useState("Every Weekday"); //daysToPost is what is sent to backend. daysToPostSelection is shown in the input
-
   const [timeToPost, setTimeToPost] = useState("07:30:00");
+
   useEffect(() => {
     const hasDaysToPost = daysToPost.length > 0;
     const hasCoursesToPost = coursesToPost.some(
       (course) => course.isSelected === true
     );
     setReadyToSubmit(!!(hasDaysToPost && hasCoursesToPost && timeToPost));
-  }, [daysToPost, coursesToPost, setReadyToSubmit, timeToPost]);
+    setOptions({
+      coursesToPost: coursesToPost
+        .filter((course) => course.isSelected)
+        .map((course) => course.courseId),
+      timeToPost,
+      daysToPost: daysToPost.map((day) => day.substring(0, 3)),
+    });
+  }, [daysToPost, coursesToPost, setReadyToSubmit, timeToPost, setOptions]);
+
   return (
     <Box>
       <FormLabel component="legend">For </FormLabel>
@@ -57,7 +75,7 @@ const PostOptions: React.FC<Props> = ({
         {courses.map((course, idx) => (
           <FormControlLabel
             label={course.courseName}
-            control={<Checkbox color="primary" key={idx} />}
+            control={<Checkbox color="primary" key={idx} disabled={disabled} />}
             onChange={() =>
               setCoursesToPost(
                 coursesToPost.map((courseToPost) =>
@@ -72,6 +90,7 @@ const PostOptions: React.FC<Props> = ({
       </FormGroup>
       <Box display="flex" flexDirection="column">
         <TextField
+          disabled={disabled}
           select
           margin="normal"
           label="Days to post"
@@ -109,7 +128,9 @@ const PostOptions: React.FC<Props> = ({
             {daysOfTheWeek.map((day, idx) => (
               <FormControlLabel
                 label={day}
-                control={<Checkbox color="primary" key={idx} />}
+                control={
+                  <Checkbox color="primary" key={idx} disabled={disabled} />
+                }
                 onChange={(e) =>
                   setDaysToPost(
                     daysToPost.some((arrDay) => arrDay === day)
@@ -122,6 +143,7 @@ const PostOptions: React.FC<Props> = ({
           </FormGroup>
         )}
         <TextField
+          disabled={disabled}
           margin="normal"
           label="Time to post"
           type="time"
