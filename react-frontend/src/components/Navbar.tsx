@@ -1,15 +1,13 @@
 import { useState } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  Link,
-  Box,
-  Avatar,
-  Typography,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
+import Link from "@material-ui/core/Link";
+import Box from "@material-ui/core/Box";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 interface Props {
