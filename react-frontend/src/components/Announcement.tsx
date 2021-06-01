@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -14,11 +15,13 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AnnouncementOutlinedIcon from "@material-ui/icons/AnnouncementOutlined";
+import DateRangeIcon from "@material-ui/icons/DateRange";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import { getLocalDayToPost } from "../utils/getLocalDayToPost";
+import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
 
 export interface Props {
-  announcementId: string;
-  title: string;
-  announcementText: string;
+  announcement: Announcement;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     card: {
+      marginTop: "5px",
       width: "100%",
       maxWidth: theme.breakpoints.values.md,
     },
@@ -58,12 +62,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Announcement: React.FC<Props> = ({
-  announcementId,
-  announcementText,
-  title,
-}) => {
+const Announcement: React.FC<Props> = ({ announcement }) => {
   const classes = useStyles();
+  const { title, announcementText, postingDays, scheduledTime } = announcement;
   const [isExpanded, setIsExpanded] = useState(false);
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
 
@@ -119,6 +120,23 @@ const Announcement: React.FC<Props> = ({
           <Typography className={classes.newLine}>
             {announcementText}
           </Typography>
+
+          <Box display="flex" alignItems="center" marginTop={3}>
+            <AccessTimeIcon className={classes.actionIcon} />
+            <Typography>{getLocalScheduledTime(scheduledTime!)}</Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <DateRangeIcon className={classes.actionIcon} />
+            <Typography>
+              {postingDays!.map(
+                (day, idx) =>
+                  `${idx === 0 ? "" : ", "}${getLocalDayToPost(
+                    day as WeekDay,
+                    scheduledTime!
+                  )}`
+              )}
+            </Typography>
+          </Box>
         </CardContent>
       </Collapse>
     </Card>

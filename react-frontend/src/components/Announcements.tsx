@@ -32,12 +32,8 @@ const Announcements: React.FC<Props> = ({ announcements }) => {
       <Typography variant="h3" className={classes.title}>
         Announcements
       </Typography>
-      {announcements.map(({ title, announcementText, announcementId }) => (
-        <Announcement
-          title={title!}
-          announcementId={announcementId!}
-          announcementText={announcementText!}
-        />
+      {announcements.map((announcement) => (
+        <Announcement announcement={announcement} />
       ))}
     </Box>
   );
