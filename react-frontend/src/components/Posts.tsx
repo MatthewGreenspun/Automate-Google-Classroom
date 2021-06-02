@@ -66,9 +66,13 @@ const Posts: React.FC<Props> = ({ user }) => {
       return data;
     }
   );
-  const { data: announcements, isLoading: AnnouncementsIsLoading } = useQuery<
+  const {
+    data: announcements,
+    isLoading: AnnouncementsIsLoading,
+    refetch: refetchAnnouncements,
+  } = useQuery<Announcement[]>("announcements", async (): Promise<
     Announcement[]
-  >("announcements", async (): Promise<Announcement[]> => {
+  > => {
     const { data } = await axios.get(
       "http://localhost:8080/api/v1/users/announcements"
     );
@@ -107,7 +111,10 @@ const Posts: React.FC<Props> = ({ user }) => {
         !AnnouncementsIsLoading &&
         announcements &&
         announcements.length > 0 && (
-          <Announcements announcements={announcements} />
+          <Announcements
+            announcements={announcements}
+            refetchAnnouncements={refetchAnnouncements}
+          />
         )}
 
       {isCreatingPost && !coursesIsLoading && courses && courses.length === 0 && (
@@ -122,6 +129,7 @@ const Posts: React.FC<Props> = ({ user }) => {
       )}
       {isCreatingPost && !coursesIsLoading && courses && courses.length > 0 && (
         <CreateAnnouncement
+          refetchAnnouncements={refetchAnnouncements}
           setIsCreatingPost={setIsCreatingPost}
           courses={courses}
         />

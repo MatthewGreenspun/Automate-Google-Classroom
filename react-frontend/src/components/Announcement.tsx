@@ -22,6 +22,8 @@ import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
 
 export interface Props {
   announcement: Announcement;
+  setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeletingId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -62,9 +64,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Announcement: React.FC<Props> = ({ announcement }) => {
+const Announcement: React.FC<Props> = ({
+  announcement,
+  setIsDeleting,
+  setDeletingId,
+}) => {
   const classes = useStyles();
-  const { title, announcementText, postingDays, scheduledTime } = announcement;
+  const {
+    title,
+    announcementText,
+    postingDays,
+    scheduledTime,
+    announcementId,
+  } = announcement;
   const [isExpanded, setIsExpanded] = useState(false);
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
 
@@ -105,7 +117,13 @@ const Announcement: React.FC<Props> = ({ announcement }) => {
         <MenuItem onClick={() => 0 /*fill out funtion later*/}>
           <EditIcon className={classes.actionIcon} /> Edit
         </MenuItem>
-        <MenuItem onClick={() => 0 /*fill out function later*/}>
+        <MenuItem
+          onClick={() => {
+            setIsDeleting(true);
+            setDeletingId(announcementId!);
+            setAnchorElement(null);
+          }}
+        >
           <DeleteIcon className={classes.actionIcon} /> Delete
         </MenuItem>
       </Menu>

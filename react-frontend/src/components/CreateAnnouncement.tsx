@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { QueryObserverResult, RefetchOptions, useMutation } from "react-query";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
@@ -9,6 +9,9 @@ import { getUTCScheduledTime } from "../utils/getUTCScheduledTime";
 import { getUTCDayToPost } from "../utils/getUTCDayToPost";
 
 interface Props {
+  refetchAnnouncements: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<Announcement[], unknown>>;
   setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
   courses: Course[];
   title?: string;
@@ -17,7 +20,11 @@ interface Props {
   postingDays?: WeekDay[];
 }
 
-const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
+const CreateAnnouncement: React.FC<Props> = ({
+  courses,
+  setIsCreatingPost,
+  refetchAnnouncements,
+}) => {
   const [optionsAreFilledOut, setOptionsAreFilledOut] = useState(false);
   const [options, setOptions] = useState<{
     daysToPost: string[];
@@ -42,13 +49,21 @@ const CreateAnnouncement: React.FC<Props> = ({ courses }) => {
       );
       const scheduledTimeUTC = getUTCScheduledTime(options.timeToPost);
 
-      mutation.mutate({
-        courseIds: options.coursesToPost,
-        title: title.trim(),
-        announcementText: announcementText.trim(),
-        postingDays: postingDaysUTC as string[],
-        scheduledTime: scheduledTimeUTC,
-      });
+      mutation.mutate(
+        {
+          courseIds: options.coursesToPost,
+          title: title.trim(),
+          announcementText: announcementText.trim(),
+          postingDays: postingDaysUTC as string[],
+          scheduledTime: scheduledTimeUTC,
+        },
+        {
+          onSuccess: () => {
+            setIsCreatingPost(false);
+            refetchAnnouncements();
+          },
+        }
+      );
     }
   }
 
