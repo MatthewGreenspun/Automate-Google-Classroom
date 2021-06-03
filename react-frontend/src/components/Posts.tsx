@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Fab from "@material-ui/core/Fab";
-import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import Snackbar from "@material-ui/core/Snackbar";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import AddIcon from "@material-ui/icons/Add";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import PostsTopBar from "./PostsTopBar";
 import CreateAnnouncement from "./CreateAnnouncement";
 import Announcements from "./Announcements";
+import SessionExpiredAlert from "./SessionExpiredAlert";
 import { useQuery } from "react-query";
 import axios from "axios";
 
@@ -21,24 +17,6 @@ interface Props {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    newPostButton: {
-      textTransform: "none",
-      maxWidth: "10em",
-      marginLeft: "5px",
-    },
-    addIcon: {
-      marginRight: "10px",
-    },
-    appBar: {
-      height: "4em",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-start",
-    },
-    arrowBackIcon: {
-      marginLeft: "5px",
-      cursor: "pointer",
-    },
     progressIndicator: {
       height: "5px",
       width: "100%",
@@ -86,23 +64,11 @@ const Posts: React.FC<Props> = ({ user }) => {
       flexDirection="column"
       alignItems="center"
     >
-      <AppBar color="secondary" position="relative" className={classes.appBar}>
-        {isCreatingPost ? (
-          <ArrowBackIcon
-            className={classes.arrowBackIcon}
-            onClick={() => setIsCreatingPost(false)}
-          />
-        ) : (
-          <Fab
-            color="primary"
-            variant="extended"
-            className={classes.newPostButton}
-            onClick={() => setIsCreatingPost(true)}
-          >
-            <AddIcon className={classes.addIcon} /> New Post
-          </Fab>
-        )}
-      </AppBar>
+      <PostsTopBar
+        isCreatingPost={isCreatingPost}
+        setIsCreatingPost={setIsCreatingPost}
+      />
+
       {isCreatingPost && coursesIsLoading && (
         <LinearProgress color="primary" className={classes.progressIndicator} />
       )}
@@ -134,20 +100,8 @@ const Posts: React.FC<Props> = ({ user }) => {
           courses={courses}
         />
       )}
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        open={sessionExpired}
-        message={"Session expired. You must sign in again. "}
-        action={
-          // eslint-disable-next-line no-restricted-globals
-          <Button color="primary" onClick={() => location.reload()}>
-            Reload
-          </Button>
-        }
-      />
+
+      <SessionExpiredAlert sessionExpired={sessionExpired} />
     </Box>
   );
 };
