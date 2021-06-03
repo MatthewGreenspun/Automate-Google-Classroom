@@ -5,6 +5,7 @@ import session from "express-session";
 import userRouter from "./routes/user";
 import authRouter from "./routes/auth";
 import createPostRouter from "./routes/createPost";
+import editpostRouter from "./routes/editPost";
 import deletePostRouter from "./routes/deletePost";
 import passport from "passport";
 import pool from "../sql/Pool";
@@ -43,6 +44,7 @@ app.get("/posts", (req, res) => {
 app.use("/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/createpost", createPostRouter);
+app.use("/api/v1/editpost", editpostRouter);
 app.use("/api/v1/deletepost", deletePostRouter);
 
 export default app;
