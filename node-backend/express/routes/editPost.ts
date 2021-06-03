@@ -63,7 +63,7 @@ router.put("/announcement/:id", checkAuthorization, (req, res) => {
         } 
         ${
           scheduledTime
-            ? `scheduledtime = $${currParam++}${
+            ? `scheduled_time = $${currParam++}${
                 currParam - 2 !== changedFields ? "," : ""
               }`
             : ""

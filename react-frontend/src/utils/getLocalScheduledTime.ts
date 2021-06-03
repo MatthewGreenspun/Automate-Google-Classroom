@@ -20,7 +20,7 @@ export function getLocalScheduledTime(utcTime: string) {
 
   return `${
     (localHours < 10 ? "0" : "") +
-    (localHours < 12 ? localHours : localHours - 12)
+    (localHours < 13 ? localHours : localHours - 12)
   }:${(localMinutes < 10 ? "0" : "") + localMinutes}${
     localHours < 12 ? "am" : "pm"
   }`;
