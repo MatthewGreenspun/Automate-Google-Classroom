@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import Box from "@material-ui/core/Box";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Typography from "@material-ui/core/Typography";
@@ -24,16 +24,27 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+export const EditingContext =
+  createContext<React.Dispatch<React.SetStateAction<string | null>> | null>(
+    null
+  );
+
 const Posts: React.FC<Props> = ({ user }) => {
   const classes = useStyles();
 
   const [isCreatingPost, setIsCreatingPost] = useState(false);
+  const [isEditingPost, setIsEditingPost] = useState(false);
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [sessionExpired, setSessionExpired] = useState(false);
 
   useEffect(() => {
     if (user) setSessionExpired(false);
     else if (!user) setSessionExpired(true);
   }, [user]);
+  useEffect(() => {
+    if (editingPostId) setIsEditingPost(true);
+    else if (!editingPostId) setIsEditingPost(false);
+  }, [editingPostId]);
 
   const { data: courses, isLoading: coursesIsLoading } = useQuery<Course[]>(
     "courses",
@@ -58,51 +69,72 @@ const Posts: React.FC<Props> = ({ user }) => {
   });
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      flexDirection="column"
-      alignItems="center"
-    >
-      <PostsTopBar
-        isCreatingPost={isCreatingPost}
-        setIsCreatingPost={setIsCreatingPost}
-      />
+    <EditingContext.Provider value={setEditingPostId}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        flexDirection="column"
+        alignItems="center"
+      >
+        <PostsTopBar
+          isCreatingPost={isCreatingPost || isEditingPost}
+          setIsCreatingPost={setIsCreatingPost}
+          setIsEditingPost={setIsEditingPost}
+        />
 
-      {isCreatingPost && coursesIsLoading && (
-        <LinearProgress color="primary" className={classes.progressIndicator} />
-      )}
-
-      {!isCreatingPost &&
-        !AnnouncementsIsLoading &&
-        announcements &&
-        announcements.length > 0 && (
-          <Announcements
-            announcements={announcements}
-            refetchAnnouncements={refetchAnnouncements}
+        {isCreatingPost && coursesIsLoading && (
+          <LinearProgress
+            color="primary"
+            className={classes.progressIndicator}
           />
         )}
 
-      {isCreatingPost && !coursesIsLoading && courses && courses.length === 0 && (
-        <Typography variant="h5" style={{ marginTop: "10px" }}>
-          Looks like you don't have any classes on Google Classroom. Try
-          Creating one{" "}
-          <Link href="https://classroom.google.com" target="_blank">
-            here
-          </Link>{" "}
-          and then come back.
-        </Typography>
-      )}
-      {isCreatingPost && !coursesIsLoading && courses && courses.length > 0 && (
-        <CreateAnnouncement
-          refetchAnnouncements={refetchAnnouncements}
-          setIsCreatingPost={setIsCreatingPost}
-          courses={courses}
-        />
-      )}
+        {!(isCreatingPost || isEditingPost) &&
+          !AnnouncementsIsLoading &&
+          announcements &&
+          announcements.length > 0 && (
+            <Announcements
+              announcements={announcements}
+              refetchAnnouncements={refetchAnnouncements}
+            />
+          )}
 
-      <SessionExpiredAlert sessionExpired={sessionExpired} />
-    </Box>
+        {isCreatingPost &&
+          !coursesIsLoading &&
+          courses &&
+          courses.length === 0 && (
+            <Typography variant="h5" style={{ marginTop: "10px" }}>
+              Looks like you don't have any classes on Google Classroom. Try
+              Creating one{" "}
+              <Link href="https://classroom.google.com" target="_blank">
+                here
+              </Link>{" "}
+              and then come back.
+            </Typography>
+          )}
+        {(isCreatingPost || isEditingPost) &&
+          !coursesIsLoading &&
+          courses &&
+          courses.length > 0 && (
+            <CreateAnnouncement
+              refetchAnnouncements={refetchAnnouncements}
+              setIsCreatingPost={setIsCreatingPost}
+              isEditing={isEditingPost}
+              setEditingPostId={setEditingPostId}
+              courses={courses}
+              editingAnnouncement={
+                isEditingPost
+                  ? announcements?.filter(
+                      ({ announcementId }) => announcementId === editingPostId
+                    )[0]
+                  : undefined
+              }
+            />
+          )}
+
+        <SessionExpiredAlert sessionExpired={sessionExpired} />
+      </Box>
+    </EditingContext.Provider>
   );
 };
 

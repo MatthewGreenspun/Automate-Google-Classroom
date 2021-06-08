@@ -12,18 +12,20 @@ interface Props {
   refetchAnnouncements: (
     options?: RefetchOptions | undefined
   ) => Promise<QueryObserverResult<Announcement[], unknown>>;
+  isEditing: boolean;
+  setEditingPostId: React.Dispatch<React.SetStateAction<string | null>>;
   setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
   courses: Course[];
-  title?: string;
-  announcementText?: string;
-  scheduledTime?: string;
-  postingDays?: WeekDay[];
+  editingAnnouncement?: Announcement;
 }
 
 const CreateAnnouncement: React.FC<Props> = ({
   courses,
   setIsCreatingPost,
+  isEditing,
+  setEditingPostId,
   refetchAnnouncements,
+  editingAnnouncement,
 }) => {
   const [optionsAreFilledOut, setOptionsAreFilledOut] = useState(false);
   const [options, setOptions] = useState<{
@@ -32,12 +34,24 @@ const CreateAnnouncement: React.FC<Props> = ({
     coursesToPost: string[];
   }>({ daysToPost: [], timeToPost: "", coursesToPost: [] });
 
-  const [title, setTitle] = useState("");
-  const [announcementText, setAnnouncementText] = useState("");
+  const [title, setTitle] = useState(
+    editingAnnouncement ? editingAnnouncement.title! : ""
+  );
+  const [announcementText, setAnnouncementText] = useState(
+    editingAnnouncement ? editingAnnouncement.announcementText! : ""
+  );
 
-  const mutation = useMutation((newAnnouncement: Announcement) =>
+  const postMutation = useMutation((newAnnouncement: Announcement) =>
     axios.post(
       "http://localhost:8080/api/v1/createpost/announcement",
+      newAnnouncement
+    )
+  );
+  const editMutation = useMutation((newAnnouncement: Announcement) =>
+    axios.put(
+      `http://localhost:8080/api/v1/editpost/announcement/${
+        editingAnnouncement!.announcementId
+      }`,
       newAnnouncement
     )
   );
@@ -49,7 +63,7 @@ const CreateAnnouncement: React.FC<Props> = ({
       );
       const scheduledTimeUTC = getUTCScheduledTime(options.timeToPost);
 
-      mutation.mutate(
+      postMutation.mutate(
         {
           courseIds: options.coursesToPost,
           title: title.trim(),
@@ -60,6 +74,7 @@ const CreateAnnouncement: React.FC<Props> = ({
         {
           onSuccess: () => {
             setIsCreatingPost(false);
+            setEditingPostId(null);
             refetchAnnouncements();
           },
         }
@@ -67,9 +82,64 @@ const CreateAnnouncement: React.FC<Props> = ({
     }
   }
 
+  function handleEdit() {
+    if (optionsAreFilledOut && title.trim() && announcementText.trim()) {
+      const postingDaysUTC = options.daysToPost.map((day) =>
+        getUTCDayToPost(day as WeekDay, options.timeToPost)
+      );
+      const scheduledTimeUTC = getUTCScheduledTime(options.timeToPost);
+      const newAnnouncement = {
+        courseIds:
+          JSON.stringify(options.coursesToPost) !==
+          JSON.stringify(editingAnnouncement!.courseIds)
+            ? options.coursesToPost
+            : undefined,
+        title:
+          title.trim() !== editingAnnouncement!.title
+            ? title.trim()
+            : undefined,
+        announcementText:
+          announcementText.trim() !== editingAnnouncement!.announcementText
+            ? announcementText.trim()
+            : undefined,
+        postingDays:
+          JSON.stringify(postingDaysUTC) !==
+          JSON.stringify(editingAnnouncement!.postingDays)
+            ? (postingDaysUTC as string[])
+            : undefined,
+        scheduledTime:
+          scheduledTimeUTC !== editingAnnouncement!.scheduledTime
+            ? scheduledTimeUTC
+            : undefined,
+      };
+
+      if (
+        //checks to make sure changes were actually made to the announcement
+        Object.keys(newAnnouncement).some(
+          (key) =>
+            newAnnouncement[
+              key as
+                | "courseIds"
+                | "title"
+                | "announcementText"
+                | "postingDays"
+                | "scheduledTime"
+            ] !== undefined
+        )
+      ) {
+        editMutation.mutate(newAnnouncement, {
+          onSuccess: () => {
+            setEditingPostId(null);
+            refetchAnnouncements();
+          },
+        });
+      } else setEditingPostId(null);
+    }
+  }
+
   return (
     <Box
-      maxWidth="800px"
+      maxWidth="1000px"
       width="100%"
       border={1}
       borderRadius={4}
@@ -84,32 +154,34 @@ const CreateAnnouncement: React.FC<Props> = ({
         fullWidth
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        disabled={mutation.isLoading}
+        disabled={postMutation.isLoading}
       />
       <TextField
         label="Announce something to your class"
         variant="filled"
         multiline
         fullWidth
-        rows={4}
+        rows={5}
+        rowsMax={15}
         margin="normal"
         value={announcementText}
         onChange={(e) => setAnnouncementText(e.target.value)}
-        disabled={mutation.isLoading}
+        disabled={postMutation.isLoading}
       />
       <PostOptions
-        disabled={mutation.isLoading}
+        disabled={postMutation.isLoading}
         courses={courses}
         setOptionsAreFilledOut={setOptionsAreFilledOut}
         setOptions={setOptions}
+        editingAnnouncement={editingAnnouncement}
       />
       <Button
-        onClick={() => handlePost()}
+        onClick={() => (isEditing ? handleEdit() : handlePost())}
         color="primary"
         variant="contained"
-        disabled={mutation.isLoading}
+        disabled={postMutation.isLoading}
       >
-        Create
+        {isEditing ? "Save" : "Create"}
       </Button>
     </Box>
   );

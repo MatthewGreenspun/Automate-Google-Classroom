@@ -7,6 +7,8 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
+import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
+import { getLocalDayToPost } from "../utils/getLocalDayToPost";
 
 const daysOfTheWeek = [
   "Sunday",
@@ -29,6 +31,7 @@ interface Props {
       coursesToPost: string[];
     }>
   >;
+  editingAnnouncement?: Announcement;
 }
 
 const PostOptions: React.FC<Props> = ({
@@ -36,20 +39,37 @@ const PostOptions: React.FC<Props> = ({
   courses,
   setOptionsAreFilledOut: setReadyToSubmit,
   setOptions,
+  editingAnnouncement,
 }) => {
   const [coursesToPost, setCoursesToPost] = useState(
-    courses.map((course) => ({ isSelected: false, ...course }))
+    courses.map((course) => ({
+      isSelected:
+        editingAnnouncement &&
+        editingAnnouncement.courseIds?.includes(course.courseId)
+          ? true
+          : false,
+      ...course,
+    }))
   );
 
-  const [daysToPost, setDaysToPost] = useState([
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-  ]);
-  const [dayToPostSelection, setDayToPostSelection] = useState("Every Weekday"); //daysToPost is what is sent to backend. daysToPostSelection is shown in the input
-  const [timeToPost, setTimeToPost] = useState("07:30:00");
+  const [daysToPost, setDaysToPost] = useState(
+    editingAnnouncement
+      ? editingAnnouncement.postingDays!.map((day) =>
+          getLocalDayToPost(day as WeekDay, editingAnnouncement.scheduledTime!)
+        )
+      : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  );
+  const [dayToPostSelection, setDayToPostSelection] = useState(
+    editingAnnouncement ? "Custom" : "Every Weekday"
+  ); //daysToPost is what is sent to backend. daysToPostSelection is shown in the input
+  const [timeToPost, setTimeToPost] = useState(
+    `${
+      editingAnnouncement
+        ? //prettier-ignore
+          getLocalScheduledTime(editingAnnouncement.scheduledTime!).substring(0,5) //substring removes am/pm
+        : "07:30"
+    }:00`
+  );
 
   useEffect(() => {
     const hasDaysToPost = daysToPost.length > 0;
@@ -73,7 +93,17 @@ const PostOptions: React.FC<Props> = ({
         {courses.map((course, idx) => (
           <FormControlLabel
             label={course.courseName}
-            control={<Checkbox color="primary" key={idx} disabled={disabled} />}
+            control={
+              <Checkbox
+                color="primary"
+                key={idx}
+                disabled={disabled}
+                checked={coursesToPost.some(
+                  ({ courseId, isSelected }) =>
+                    courseId === course.courseId && isSelected
+                )}
+              />
+            }
             onChange={() =>
               setCoursesToPost(
                 coursesToPost.map((courseToPost) =>
@@ -127,7 +157,12 @@ const PostOptions: React.FC<Props> = ({
               <FormControlLabel
                 label={day}
                 control={
-                  <Checkbox color="primary" key={idx} disabled={disabled} />
+                  <Checkbox
+                    color="primary"
+                    key={idx}
+                    disabled={disabled}
+                    checked={daysToPost.includes(day)}
+                  />
                 }
                 onChange={(e) =>
                   setDaysToPost(

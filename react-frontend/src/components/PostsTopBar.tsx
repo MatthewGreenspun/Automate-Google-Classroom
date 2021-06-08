@@ -31,11 +31,13 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   isCreatingPost: boolean;
   setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsEditingPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PostsTopBar: React.FC<Props> = ({
   isCreatingPost,
   setIsCreatingPost,
+  setIsEditingPost,
 }) => {
   const classes = useStyles();
 
@@ -44,7 +46,10 @@ const PostsTopBar: React.FC<Props> = ({
       {isCreatingPost ? (
         <ArrowBackIcon
           className={classes.arrowBackIcon}
-          onClick={() => setIsCreatingPost(false)}
+          onClick={() => {
+            setIsCreatingPost(false);
+            setIsEditingPost(false);
+          }}
         />
       ) : (
         <Fab
