@@ -7,6 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import PostOptions from "./PostOptions";
 import { getUTCScheduledTime } from "../utils/getUTCScheduledTime";
 import { getUTCDayToPost } from "../utils/getUTCDayToPost";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 interface Props {
   refetchAnnouncements: (
@@ -18,6 +19,33 @@ interface Props {
   courses: Course[];
   editingAnnouncement?: Announcement;
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    outerContainer: {
+      display: "block",
+      "@media (min-width:1000px)": {
+        display: "flex",
+        justifyContent: "space-between",
+      },
+    },
+    textContainer: {
+      display: "block",
+      "@media (min-width:1000px)": {
+        flexGrow: "1",
+        marginRight: theme.spacing(2),
+      },
+    },
+    optionsContainer: {
+      display: "block",
+      "@media (min-width:1000px)": {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-end",
+      },
+    },
+  })
+);
 
 const CreateAnnouncement: React.FC<Props> = ({
   courses,
@@ -136,6 +164,7 @@ const CreateAnnouncement: React.FC<Props> = ({
       } else setEditingPostId(null);
     }
   }
+  const classes = useStyles();
 
   return (
     <Box
@@ -146,43 +175,48 @@ const CreateAnnouncement: React.FC<Props> = ({
       borderColor="primary"
       p={2}
       m={2}
+      className={classes.outerContainer}
     >
-      <TextField
-        label="Title"
-        variant="filled"
-        margin="normal"
-        fullWidth
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        disabled={postMutation.isLoading}
-      />
-      <TextField
-        label="Announce something to your class"
-        variant="filled"
-        multiline
-        fullWidth
-        rows={5}
-        rowsMax={15}
-        margin="normal"
-        value={announcementText}
-        onChange={(e) => setAnnouncementText(e.target.value)}
-        disabled={postMutation.isLoading}
-      />
-      <PostOptions
-        disabled={postMutation.isLoading}
-        courses={courses}
-        setOptionsAreFilledOut={setOptionsAreFilledOut}
-        setOptions={setOptions}
-        editingAnnouncement={editingAnnouncement}
-      />
-      <Button
-        onClick={() => (isEditing ? handleEdit() : handlePost())}
-        color="primary"
-        variant="contained"
-        disabled={postMutation.isLoading}
-      >
-        {isEditing ? "Save" : "Create"}
-      </Button>
+      <Box className={classes.textContainer}>
+        <TextField
+          label="Title"
+          variant="filled"
+          margin="normal"
+          fullWidth
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          disabled={postMutation.isLoading}
+        />
+        <TextField
+          label="Announce something to your class"
+          variant="filled"
+          multiline
+          fullWidth
+          rows={5}
+          rowsMax={15}
+          margin="normal"
+          value={announcementText}
+          onChange={(e) => setAnnouncementText(e.target.value)}
+          disabled={postMutation.isLoading}
+        />
+      </Box>
+      <Box className={classes.optionsContainer}>
+        <PostOptions
+          disabled={postMutation.isLoading}
+          courses={courses}
+          setOptionsAreFilledOut={setOptionsAreFilledOut}
+          setOptions={setOptions}
+          editingAnnouncement={editingAnnouncement}
+        />
+        <Button
+          onClick={() => (isEditing ? handleEdit() : handlePost())}
+          color="primary"
+          variant="contained"
+          disabled={postMutation.isLoading}
+        >
+          {isEditing ? "Save" : "Create"}
+        </Button>
+      </Box>
     </Box>
   );
 };
