@@ -6,7 +6,7 @@ CREATE TABLE announcements(
   course_ids VARCHAR(100)[] NOT NULL,
   title VARCHAR(1000) NOT NULL,
   announcement_text TEXT NOT NULL,
-  scheduled_time VARCHAR(5), -- hh:mm
+  scheduled_time VARCHAR(5) NOT NULL, -- hh:mm
   posting_days VARCHAR(3)[] NOT NULL, -- ex: ['mon', 'wed', 'thu']
   last_posted TIMESTAMP
 );
