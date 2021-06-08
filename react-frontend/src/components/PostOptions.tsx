@@ -7,6 +7,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
+import Alert from "@material-ui/lab/Alert";
 import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
 import { getLocalDayToPost } from "../utils/getLocalDayToPost";
 
@@ -22,6 +23,8 @@ const daysOfTheWeek = [
 
 interface Props {
   disabled: boolean;
+  coursesError: boolean;
+  daysError: boolean;
   courses: { courseId: string; courseName: string }[];
   setOptionsAreFilledOut: React.Dispatch<React.SetStateAction<boolean>>;
   setOptions: React.Dispatch<
@@ -36,6 +39,8 @@ interface Props {
 
 const PostOptions: React.FC<Props> = ({
   disabled,
+  coursesError,
+  daysError,
   courses,
   setOptionsAreFilledOut: setReadyToSubmit,
   setOptions,
@@ -115,6 +120,9 @@ const PostOptions: React.FC<Props> = ({
             }
           />
         ))}
+        {coursesError && (
+          <Alert severity="error">Selet at least one course</Alert>
+        )}
       </FormGroup>
       <Box display="flex" flexDirection="column">
         <TextField
@@ -173,6 +181,9 @@ const PostOptions: React.FC<Props> = ({
                 }
               />
             ))}
+            {daysError && (
+              <Alert severity="error">Selet at least one day</Alert>
+            )}
           </FormGroup>
         )}
         <TextField

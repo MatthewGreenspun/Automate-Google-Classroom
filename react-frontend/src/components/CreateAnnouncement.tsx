@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { QueryObserverResult, RefetchOptions, useMutation } from "react-query";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
@@ -65,9 +65,19 @@ const CreateAnnouncement: React.FC<Props> = ({
   const [title, setTitle] = useState(
     editingAnnouncement ? editingAnnouncement.title! : ""
   );
+  const [titleError, setTitleError] = useState(false);
   const [announcementText, setAnnouncementText] = useState(
     editingAnnouncement ? editingAnnouncement.announcementText! : ""
   );
+  const [textError, setTextError] = useState(false);
+  const [coursesError, setCoursesError] = useState(false);
+  const [daysError, setDaysError] = useState(false);
+
+  useEffect(() => {
+    if (options.coursesToPost.length > 0 && coursesError)
+      setCoursesError(false);
+    if (options.daysToPost.length > 0 && daysError) setDaysError(false);
+  }, [coursesError, daysError, options.coursesToPost, options.daysToPost]);
 
   const postMutation = useMutation((newAnnouncement: Announcement) =>
     axios.post(
@@ -83,8 +93,21 @@ const CreateAnnouncement: React.FC<Props> = ({
       newAnnouncement
     )
   );
+  function handleValidation() {
+    if (title.trim().length === 0) setTitleError(true);
+    else setTitleError(false);
 
+    if (announcementText.trim().length === 0) setTextError(true);
+    else setTextError(false);
+
+    if (options.coursesToPost.length === 0) setCoursesError(true);
+    else setCoursesError(false);
+
+    if (options.daysToPost.length === 0) setDaysError(true);
+    else setDaysError(false);
+  }
   function handlePost() {
+    handleValidation();
     if (optionsAreFilledOut && title.trim() && announcementText.trim()) {
       const postingDaysUTC = options.daysToPost.map((day) =>
         getUTCDayToPost(day as WeekDay, options.timeToPost)
@@ -111,6 +134,7 @@ const CreateAnnouncement: React.FC<Props> = ({
   }
 
   function handleEdit() {
+    handleValidation();
     if (optionsAreFilledOut && title.trim() && announcementText.trim()) {
       const postingDaysUTC = options.daysToPost.map((day) =>
         getUTCDayToPost(day as WeekDay, options.timeToPost)
@@ -179,15 +203,23 @@ const CreateAnnouncement: React.FC<Props> = ({
     >
       <Box className={classes.textContainer}>
         <TextField
+          error={titleError}
+          helperText={titleError ? "Title is required" : ""}
           label="Title"
           variant="filled"
           margin="normal"
           fullWidth
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value);
+            if (titleError && e.target.value.trim().length > 0)
+              setTitleError(false);
+          }}
           disabled={postMutation.isLoading}
         />
         <TextField
+          error={textError}
+          helperText={textError ? "Announcement text is required" : ""}
           label="Announce something to your class"
           variant="filled"
           multiline
@@ -196,13 +228,19 @@ const CreateAnnouncement: React.FC<Props> = ({
           rowsMax={15}
           margin="normal"
           value={announcementText}
-          onChange={(e) => setAnnouncementText(e.target.value)}
+          onChange={(e) => {
+            setAnnouncementText(e.target.value);
+            if (textError && e.target.value.trim().length > 0)
+              setTextError(false);
+          }}
           disabled={postMutation.isLoading}
         />
       </Box>
       <Box className={classes.optionsContainer}>
         <PostOptions
           disabled={postMutation.isLoading}
+          coursesError={coursesError}
+          daysError={daysError}
           courses={courses}
           setOptionsAreFilledOut={setOptionsAreFilledOut}
           setOptions={setOptions}
