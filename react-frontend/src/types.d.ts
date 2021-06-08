@@ -9,6 +9,22 @@ interface Announcement {
   lastPosted?: string;
 }
 
+interface Question {
+  questionId?: string;
+  userId?: string;
+  courseIds?: string[];
+  topicId?: string[];
+  title?: string;
+  description?: string;
+  postingDays?: string[];
+  scheduledTime?: string;
+  dueDate?: string;
+  dueTime?: string;
+  submissionModifiable?: boolean;
+  maxPoints?: number;
+  choices?: string[];
+}
+
 interface User {
   displayName: string;
   profilePictureLink: string;

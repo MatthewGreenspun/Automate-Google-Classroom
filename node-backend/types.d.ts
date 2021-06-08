@@ -16,3 +16,19 @@ interface DatabaseAnnouncementData {
   posting_days?: string[];
   last_posted?: string;
 }
+
+interface DatabaseSaQuestion {
+  question_id?: string;
+  user_id?: string;
+  course_ids?: string[];
+  topic_id?: string[];
+  title?: string;
+  description?: string;
+  posting_days?: string[];
+  scheduled_time?: string;
+  due_date?: string;
+  due_time?: string;
+  submissionModifiable?: boolean;
+  max_points?: number;
+  choices?: string[];
+}

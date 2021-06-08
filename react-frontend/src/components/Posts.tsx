@@ -6,6 +6,7 @@ import Link from "@material-ui/core/Link";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import PostsTopBar from "./PostsTopBar";
 import CreateAnnouncement from "./CreateAnnouncement";
+import CreateQuestion from "./CreateQuestion";
 import Announcements from "./Announcements";
 import SessionExpiredAlert from "./SessionExpiredAlert";
 import { useQuery } from "react-query";
@@ -64,6 +65,16 @@ const Posts: React.FC<Props> = ({ user }) => {
   > => {
     const { data } = await axios.get(
       "http://localhost:8080/api/v1/users/announcements"
+    );
+    return data;
+  });
+  const {
+    data: questions,
+    isLoading: questionsIsLoading,
+    refetch: refetchQuestions,
+  } = useQuery<Question[]>("announcements", async (): Promise<Question[]> => {
+    const { data } = await axios.get(
+      "http://localhost:8080/api/v1/users/questions"
     );
     return data;
   });
