@@ -21,7 +21,7 @@ interface DatabaseSaQuestion {
   question_id?: string;
   user_id?: string;
   course_ids?: string[];
-  topic_id?: string[];
+  topic_id?: string;
   title?: string;
   description?: string;
   posting_days?: string[];

@@ -13,7 +13,7 @@ interface Question {
   questionId?: string;
   userId?: string;
   courseIds?: string[];
-  topicId?: string[];
+  topicId?: string;
   title?: string;
   description?: string;
   postingDays?: string[];
