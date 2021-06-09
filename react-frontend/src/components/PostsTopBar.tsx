@@ -1,8 +1,12 @@
+import { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Fab from "@material-ui/core/Fab";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import AddIcon from "@material-ui/icons/Add";
-
+import AnnouncementOutlinedIcon from "@material-ui/icons/AnnouncementOutlined";
+import LiveHelpOutlinedIcon from "@material-ui/icons/LiveHelpOutlined";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -12,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: "10em",
       marginLeft: "5px",
     },
-    addIcon: {
+    actionIcon: {
       marginRight: "10px",
     },
     appBar: {
@@ -30,15 +34,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface Props {
   isCreatingPost: boolean;
-  setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+  setCreatingPostType: React.Dispatch<
+    React.SetStateAction<"announcement" | "question" | null>
+  >;
   setIsEditingPost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PostsTopBar: React.FC<Props> = ({
   isCreatingPost,
-  setIsCreatingPost,
+  setCreatingPostType,
   setIsEditingPost,
 }) => {
+  const [anchorElement, setAnchorElement] = useState<HTMLElement | null>(null);
   const classes = useStyles();
 
   return (
@@ -47,7 +54,7 @@ const PostsTopBar: React.FC<Props> = ({
         <ArrowBackIcon
           className={classes.arrowBackIcon}
           onClick={() => {
-            setIsCreatingPost(false);
+            setCreatingPostType(null);
             setIsEditingPost(false);
           }}
         />
@@ -56,11 +63,38 @@ const PostsTopBar: React.FC<Props> = ({
           color="primary"
           variant="extended"
           className={classes.newPostButton}
-          onClick={() => setIsCreatingPost(true)}
+          onClick={(e) => {
+            setAnchorElement(e.currentTarget);
+          }}
         >
-          <AddIcon className={classes.addIcon} /> New Post
+          <AddIcon className={classes.actionIcon} /> New Post
         </Fab>
       )}
+      <Menu
+        anchorEl={anchorElement}
+        keepMounted
+        open={Boolean(anchorElement)}
+        onClose={() => setAnchorElement(null)}
+      >
+        <MenuItem
+          onClick={() => {
+            setAnchorElement(null);
+            setCreatingPostType("announcement");
+          }}
+        >
+          <AnnouncementOutlinedIcon className={classes.actionIcon} />
+          Announcement
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorElement(null);
+            setCreatingPostType("question");
+          }}
+        >
+          <LiveHelpOutlinedIcon className={classes.actionIcon} />
+          Question
+        </MenuItem>
+      </Menu>
     </AppBar>
   );
 };
