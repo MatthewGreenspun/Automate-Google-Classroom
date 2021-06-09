@@ -5,9 +5,10 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import PostOptions from "./PostOptions";
+import QuestionOptions from "./QuestionOptions";
 import { getUTCScheduledTime } from "../utils/getUTCScheduledTime";
 import { getUTCDayToPost } from "../utils/getUTCDayToPost";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { useCreatePostStyles } from "./CreateAnnouncement";
 
 interface Props {
   refetchQuestions: (
@@ -15,41 +16,16 @@ interface Props {
   ) => Promise<QueryObserverResult<Question[], unknown>>;
   isEditing: boolean;
   setEditingPostId: React.Dispatch<React.SetStateAction<string | null>>;
-  setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+  setCreatingPostType: React.Dispatch<
+    React.SetStateAction<"announcement" | "question" | null>
+  >;
   courses: Course[];
   editingQuestion?: Question;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    outerContainer: {
-      display: "block",
-      "@media (min-width:1000px)": {
-        display: "flex",
-        justifyContent: "space-between",
-      },
-    },
-    textContainer: {
-      display: "block",
-      "@media (min-width:1000px)": {
-        flexGrow: "1",
-        marginRight: theme.spacing(2),
-      },
-    },
-    optionsContainer: {
-      display: "block",
-      "@media (min-width:1000px)": {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-end",
-      },
-    },
-  })
-);
-
 const CreateAnnouncement: React.FC<Props> = ({
   courses,
-  setIsCreatingPost,
+  setCreatingPostType,
   isEditing,
   setEditingPostId,
   refetchQuestions,
@@ -61,7 +37,19 @@ const CreateAnnouncement: React.FC<Props> = ({
     timeToPost: string;
     coursesToPost: string[];
   }>({ daysToPost: [], timeToPost: "", coursesToPost: [] });
-
+  const [questionOptions, setQuestionOptions] = useState<{
+    questionType: "mc" | "sa";
+    points: "Ungraded" | number;
+    topicToPost: string;
+    dueDate: "No due date" | "Day posted";
+    dueTime: string;
+  }>({
+    questionType: "sa",
+    points: 100,
+    topicToPost: "No topic",
+    dueDate: "No due date",
+    dueTime: "07:30:00",
+  });
   const [title, setTitle] = useState(
     editingQuestion ? editingQuestion.title! : ""
   );
@@ -78,17 +66,17 @@ const CreateAnnouncement: React.FC<Props> = ({
     if (options.daysToPost.length > 0 && daysError) setDaysError(false);
   }, [coursesError, daysError, options.coursesToPost, options.daysToPost]);
 
-  const postMutation = useMutation((newAnnouncement: Announcement) =>
+  const postMutation = useMutation((newQuestion: Question) =>
     axios.post(
-      "http://localhost:8080/api/v1/createpost/announcement",
-      newAnnouncement
+      `http://localhost:8080/api/v1/createpost/${questionOptions.questionType}question`,
+      newQuestion
     )
   );
   const editMutation = useMutation((newQuestion: Question) =>
     axios.put(
-      `http://localhost:8080/api/v1/editpost/announcement/${
-        editingQuestion!.questionId
-      }`,
+      `http://localhost:8080/api/v1/editpost/${
+        questionOptions.questionType
+      }question/${editingQuestion!.questionId}`,
       newQuestion
     )
   );
@@ -114,13 +102,22 @@ const CreateAnnouncement: React.FC<Props> = ({
         {
           courseIds: options.coursesToPost,
           title: title.trim(),
-          announcementText: description.trim(),
+          description: description.trim(),
           postingDays: postingDaysUTC as string[],
           scheduledTime: scheduledTimeUTC,
+          topicId: questionOptions.topicToPost,
+          dueDate:
+            questionOptions.dueDate === "No due date"
+              ? undefined
+              : questionOptions.dueDate,
+          dueTime: questionOptions.dueTime,
+          submissionModifiable: false,
+          maxPoints:
+            questionOptions.points === "Ungraded" ? 0 : questionOptions.points,
         },
         {
           onSuccess: () => {
-            setIsCreatingPost(false);
+            setCreatingPostType(null);
             setEditingPostId(null);
             refetchQuestions();
           },
@@ -182,7 +179,7 @@ const CreateAnnouncement: React.FC<Props> = ({
       } else setEditingPostId(null);
     }
   }
-  const classes = useStyles();
+  const classes = useCreatePostStyles();
 
   return (
     <Box
@@ -225,6 +222,11 @@ const CreateAnnouncement: React.FC<Props> = ({
         />
       </Box>
       <Box className={classes.optionsContainer}>
+        <QuestionOptions
+          disabled={postMutation.isLoading}
+          topics={[]}
+          setQuestionOptions={setQuestionOptions}
+        />
         <PostOptions
           disabled={postMutation.isLoading}
           coursesError={coursesError}

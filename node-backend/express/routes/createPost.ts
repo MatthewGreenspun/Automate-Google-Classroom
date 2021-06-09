@@ -46,7 +46,7 @@ router.post("/saquestion", checkAuthorization, (req, res) => {
     maxPoints,
   }: {
     courseIds?: string[];
-    topicId?: string[];
+    topicId?: string;
     title?: string;
     description?: string;
     postingDays?: string[];
@@ -78,7 +78,10 @@ router.post("/saquestion", checkAuthorization, (req, res) => {
       ]
     )
     .then(() => res.status(200).send({ message: "success" }))
-    .catch((err) => res.status(500).send({ error: err }));
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({ error: err });
+    });
 });
 
 export default router;

@@ -15,12 +15,14 @@ interface Props {
   ) => Promise<QueryObserverResult<Announcement[], unknown>>;
   isEditing: boolean;
   setEditingPostId: React.Dispatch<React.SetStateAction<string | null>>;
-  setIsCreatingPost: React.Dispatch<React.SetStateAction<boolean>>;
+  setCreatingPostType: React.Dispatch<
+    React.SetStateAction<"announcement" | "question" | null>
+  >;
   courses: Course[];
   editingAnnouncement?: Announcement;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+export const useCreatePostStyles = makeStyles((theme: Theme) =>
   createStyles({
     outerContainer: {
       display: "block",
@@ -49,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const CreateAnnouncement: React.FC<Props> = ({
   courses,
-  setIsCreatingPost,
+  setCreatingPostType,
   isEditing,
   setEditingPostId,
   refetchAnnouncements,
@@ -124,7 +126,7 @@ const CreateAnnouncement: React.FC<Props> = ({
         },
         {
           onSuccess: () => {
-            setIsCreatingPost(false);
+            setCreatingPostType(null);
             setEditingPostId(null);
             refetchAnnouncements();
           },
@@ -188,7 +190,7 @@ const CreateAnnouncement: React.FC<Props> = ({
       } else setEditingPostId(null);
     }
   }
-  const classes = useStyles();
+  const classes = useCreatePostStyles();
 
   return (
     <Box

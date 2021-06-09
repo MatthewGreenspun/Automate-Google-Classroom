@@ -33,7 +33,8 @@ export const EditingContext =
 const Posts: React.FC<Props> = ({ user }) => {
   const classes = useStyles();
 
-  const [isCreatingPost, setIsCreatingPost] = useState(false);
+  const [creatingPostType, setCreatingPostType] =
+    useState<null | "announcement" | "question">(null);
   const [isEditingPost, setIsEditingPost] = useState(false);
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [sessionExpired, setSessionExpired] = useState(false);
@@ -88,19 +89,19 @@ const Posts: React.FC<Props> = ({ user }) => {
         alignItems="center"
       >
         <PostsTopBar
-          isCreatingPost={isCreatingPost || isEditingPost}
-          setIsCreatingPost={setIsCreatingPost}
+          isCreatingPost={!!creatingPostType || isEditingPost}
+          setCreatingPostType={setCreatingPostType}
           setIsEditingPost={setIsEditingPost}
         />
 
-        {isCreatingPost && coursesIsLoading && (
+        {creatingPostType && coursesIsLoading && (
           <LinearProgress
             color="primary"
             className={classes.progressIndicator}
           />
         )}
 
-        {!(isCreatingPost || isEditingPost) &&
+        {!(!!creatingPostType || isEditingPost) &&
           !AnnouncementsIsLoading &&
           announcements &&
           announcements.length > 0 && (
@@ -110,7 +111,7 @@ const Posts: React.FC<Props> = ({ user }) => {
             />
           )}
 
-        {isCreatingPost &&
+        {creatingPostType &&
           !coursesIsLoading &&
           courses &&
           courses.length === 0 && (
@@ -123,13 +124,14 @@ const Posts: React.FC<Props> = ({ user }) => {
               and then come back.
             </Typography>
           )}
-        {(isCreatingPost || isEditingPost) &&
+        {(!!creatingPostType || isEditingPost) &&
+          creatingPostType === "announcement" &&
           !coursesIsLoading &&
           courses &&
           courses.length > 0 && (
             <CreateAnnouncement
               refetchAnnouncements={refetchAnnouncements}
-              setIsCreatingPost={setIsCreatingPost}
+              setCreatingPostType={setCreatingPostType}
               isEditing={isEditingPost}
               setEditingPostId={setEditingPostId}
               courses={courses}
@@ -137,6 +139,27 @@ const Posts: React.FC<Props> = ({ user }) => {
                 isEditingPost
                   ? announcements?.filter(
                       ({ announcementId }) => announcementId === editingPostId
+                    )[0]
+                  : undefined
+              }
+            />
+          )}
+
+        {(!!creatingPostType || isEditingPost) &&
+          creatingPostType === "question" &&
+          !coursesIsLoading &&
+          courses &&
+          courses.length > 0 && (
+            <CreateQuestion
+              refetchQuestions={refetchQuestions}
+              setCreatingPostType={setCreatingPostType}
+              isEditing={isEditingPost}
+              setEditingPostId={setEditingPostId}
+              courses={courses}
+              editingQuestion={
+                isEditingPost
+                  ? questions?.filter(
+                      ({ questionId }) => questionId === editingPostId
                     )[0]
                   : undefined
               }

@@ -5,9 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import Alert from "@material-ui/lab/Alert";
 import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
-import { getLocalDayToPost } from "../utils/getLocalDayToPost";
 
 interface Props {
   disabled: boolean;
@@ -42,13 +40,13 @@ const QuestionOptions: React.FC<Props> = ({
         ? //prettier-ignore
           getLocalScheduledTime(editingQuestion.scheduledTime!).substring(0,5) //substring removes am/pm
         : "07:30"
-    }:00`
+    }`
   );
 
   useEffect(() => {
     setQuestionOptions({
       questionType,
-      points,
+      points: points === 0 || points === "Ungraded" ? "Ungraded" : points,
       topicToPost,
       dueDate,
       dueTime,
@@ -74,6 +72,9 @@ const QuestionOptions: React.FC<Props> = ({
       <FormGroup>
         <Autocomplete
           freeSolo
+          onSelect={(e) => {
+            if ((e.target as any).value === "Ungraded") setPoints("Ungraded");
+          }}
           defaultValue="100"
           options={["Ungraded"]}
           renderInput={(params) => (
