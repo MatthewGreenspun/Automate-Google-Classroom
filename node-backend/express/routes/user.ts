@@ -68,7 +68,7 @@ router.get("/announcements", checkAuthorization, async (req, res) => {
 router.get("/saquestions", checkAuthorization, async (req, res) => {
   const { rows }: { rows: DatabaseSaQuestion[] } = await pool.query(
     `SELECT 
-      sa_question_id, description, due_date, due_time, max_points, submission_modifiable, topic_id, course_ids, title, scheduled_time, posting_days   
+      sa_question_id AS question_id, description, due_date, due_time, max_points, submission_modifiable, topic_id, course_ids, title, scheduled_time, posting_days   
       FROM short_answer_questions 
       WHERE user_id = $1`,
     [(req.user as DatabaseUserData).user_id]
@@ -109,7 +109,7 @@ router.get("/saquestions", checkAuthorization, async (req, res) => {
 router.get("/mcquestions", checkAuthorization, async (req, res) => {
   const { rows }: { rows: DatabaseMcQuestion[] } = await pool.query(
     `SELECT 
-      mc_question_id, description, due_date, due_time, max_points, submission_modifiable, topic_id, course_ids, title, scheduled_time, posting_days, choices
+      mc_question_id AS question_id, description, due_date, due_time, max_points, submission_modifiable, topic_id, course_ids, title, scheduled_time, posting_days, choices
       FROM short_answer_questions 
       WHERE user_id = $1`,
     [(req.user as DatabaseUserData).user_id]
