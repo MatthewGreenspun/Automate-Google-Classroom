@@ -10,6 +10,7 @@ interface Announcement {
 }
 
 interface Question {
+  type?: "mc" | "sa";
   questionId?: string;
   userId?: string;
   courseIds?: string[];

@@ -14,14 +14,14 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import AnnouncementOutlinedIcon from "@material-ui/icons/AnnouncementOutlined";
+import LiveHelpOutlinedIcon from "@material-ui/icons/LiveHelpOutlined";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import { getLocalDayToPost } from "../utils/getLocalDayToPost";
 import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
 
 export interface Props {
-  announcement: Announcement;
+  question: Question;
   setIsDeleting: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletingId: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -64,20 +64,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const Announcement: React.FC<Props> = ({
-  announcement,
+const Question: React.FC<Props> = ({
+  question,
   setIsDeleting,
   setDeletingId,
 }) => {
   const classes = useStyles();
   const setEditingPostId = useContext(EditingContext)!;
-  const {
-    title,
-    announcementText,
-    postingDays,
-    scheduledTime,
-    announcementId,
-  } = announcement;
+  const { title, description, postingDays, scheduledTime, questionId } =
+    question;
   const [isExpanded, setIsExpanded] = useState(false);
   const [anchorElement, setAnchorElement] = useState<null | HTMLElement>(null);
 
@@ -87,7 +82,7 @@ const Announcement: React.FC<Props> = ({
         className={classes.card + " " + classes.cardHeader}
         avatar={
           <Avatar className={classes.announcementIcon}>
-            <AnnouncementOutlinedIcon />
+            <LiveHelpOutlinedIcon />
           </Avatar>
         }
         title={
@@ -115,13 +110,13 @@ const Announcement: React.FC<Props> = ({
         open={Boolean(anchorElement)}
         onClose={() => setAnchorElement(null)}
       >
-        <MenuItem onClick={() => setEditingPostId(announcementId!)}>
+        <MenuItem onClick={() => setEditingPostId(questionId!)}>
           <EditIcon className={classes.actionIcon} /> Edit
         </MenuItem>
         <MenuItem
           onClick={() => {
             setIsDeleting(true);
-            setDeletingId(announcementId!);
+            setDeletingId(questionId!);
             setAnchorElement(null);
           }}
         >
@@ -130,14 +125,12 @@ const Announcement: React.FC<Props> = ({
       </Menu>
       {!isExpanded && (
         <CardContent>
-          <Typography noWrap>{announcementText}</Typography>
+          <Typography noWrap>{description}</Typography>
         </CardContent>
       )}
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography className={classes.newLine}>
-            {announcementText}
-          </Typography>
+          <Typography className={classes.newLine}>{description}</Typography>
 
           <Box display="flex" alignItems="center" marginTop={3}>
             <AccessTimeIcon className={classes.actionIcon} />
@@ -161,4 +154,4 @@ const Announcement: React.FC<Props> = ({
   );
 };
 
-export default Announcement;
+export default Question;

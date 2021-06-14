@@ -8,6 +8,7 @@ import PostsTopBar from "./PostsTopBar";
 import CreateAnnouncement from "./CreateAnnouncement";
 import CreateQuestion from "./CreateQuestion";
 import Announcements from "./Announcements";
+import Questions from "./Questions";
 import SessionExpiredAlert from "./SessionExpiredAlert";
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -73,11 +74,15 @@ const Posts: React.FC<Props> = ({ user }) => {
     data: questions,
     isLoading: questionsIsLoading,
     refetch: refetchQuestions,
-  } = useQuery<Question[]>("announcements", async (): Promise<Question[]> => {
-    const { data } = await axios.get(
-      "http://localhost:8080/api/v1/users/questions"
+  } = useQuery<Question[]>("questions", async (): Promise<Question[]> => {
+    const { data: saQuestions } = await axios.get(
+      "http://localhost:8080/api/v1/users/saquestions"
     );
-    return data;
+
+    // const { data: mcQuestions } = await axios.get(
+    //   "http://localhost:8080/api/v1/users/mcquestions"
+    // );
+    return saQuestions;
   });
 
   return (
@@ -108,6 +113,16 @@ const Posts: React.FC<Props> = ({ user }) => {
             <Announcements
               announcements={announcements}
               refetchAnnouncements={refetchAnnouncements}
+            />
+          )}
+
+        {!(!!creatingPostType || isEditingPost) &&
+          !questionsIsLoading &&
+          questions &&
+          questions.length > 0 && (
+            <Questions
+              questions={questions}
+              refetchQuestions={refetchQuestions}
             />
           )}
 
