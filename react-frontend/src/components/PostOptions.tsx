@@ -92,7 +92,7 @@ const PostOptions: React.FC<Props> = ({
   }, [daysToPost, coursesToPost, setReadyToSubmit, timeToPost, setOptions]);
 
   return (
-    <Box>
+    <Box width="100%">
       <FormLabel component="legend">For </FormLabel>
       <FormGroup>
         {courses.map((course, idx) => (

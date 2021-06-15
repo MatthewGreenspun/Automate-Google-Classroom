@@ -4,6 +4,8 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
 
@@ -14,9 +16,9 @@ interface Props {
     React.SetStateAction<{
       questionType: "mc" | "sa";
       points: "Ungraded" | number;
-      topicToPost: string;
       dueDate: "No due date" | "Day posted";
       dueTime: string;
+      submissionModifiable: boolean;
     }>
   >;
   editingQuestion?: Question;
@@ -30,7 +32,7 @@ const QuestionOptions: React.FC<Props> = ({
 }) => {
   const [questionType, setQuestionType] = useState<"mc" | "sa">("sa");
   const [points, setPoints] = useState<number | "Ungraded">(100);
-  const [topicToPost, setTopicToPost] = useState<string>("No Topic");
+  const [submissionModifiable, setSubmissionModifiable] = useState(false);
 
   const [dueDate, setDueDate] =
     useState<"No due date" | "Day posted">("No due date");
@@ -47,11 +49,18 @@ const QuestionOptions: React.FC<Props> = ({
     setQuestionOptions({
       questionType,
       points: points === 0 || points === "Ungraded" ? "Ungraded" : points,
-      topicToPost,
       dueDate,
       dueTime,
+      submissionModifiable,
     });
-  }, [questionType, points, topicToPost, dueDate, dueTime, setQuestionOptions]);
+  }, [
+    questionType,
+    points,
+    dueDate,
+    dueTime,
+    submissionModifiable,
+    setQuestionOptions,
+  ]);
 
   return (
     <Box display="flex" flexDirection="column" width="100%">
@@ -92,24 +101,6 @@ const QuestionOptions: React.FC<Props> = ({
           )}
         />
       </FormGroup>
-      <FormGroup>
-        <TextField
-          disabled={disabled}
-          select
-          margin="normal"
-          label="Topic"
-          defaultValue="No topic"
-          onChange={(e) => setTopicToPost(e.target.value)}
-          variant="filled"
-        >
-          <MenuItem value="No topic">No topic</MenuItem>
-          {topics.map(({ topicId, topicName }) => (
-            <MenuItem value={topicId} key={topicId}>
-              {topicName}
-            </MenuItem>
-          ))}
-        </TextField>
-      </FormGroup>
       <TextField
         disabled={disabled}
         select
@@ -139,6 +130,16 @@ const QuestionOptions: React.FC<Props> = ({
           }}
         />
       )}
+      <FormControlLabel
+        control={
+          <Checkbox
+            color="primary"
+            checked={submissionModifiable}
+            onChange={(e) => setSubmissionModifiable(e.target.checked)}
+          />
+        }
+        label="Students can edit answer"
+      />
     </Box>
   );
 };

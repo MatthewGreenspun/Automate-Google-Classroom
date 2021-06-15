@@ -40,15 +40,15 @@ const CreateAnnouncement: React.FC<Props> = ({
   const [questionOptions, setQuestionOptions] = useState<{
     questionType: "mc" | "sa";
     points: "Ungraded" | number;
-    topicToPost: string;
     dueDate: "No due date" | "Day posted";
     dueTime: string;
+    submissionModifiable: boolean;
   }>({
     questionType: "sa",
     points: 100,
-    topicToPost: "No topic",
     dueDate: "No due date",
     dueTime: "07:30:00",
+    submissionModifiable: false,
   });
   const [title, setTitle] = useState(
     editingQuestion ? editingQuestion.title! : ""
@@ -92,7 +92,7 @@ const CreateAnnouncement: React.FC<Props> = ({
   }
   function handlePost() {
     handleValidation();
-    if (optionsAreFilledOut && title.trim() && description.trim()) {
+    if (optionsAreFilledOut && title.trim()) {
       const postingDaysUTC = options.daysToPost.map((day) =>
         getUTCDayToPost(day as WeekDay, options.timeToPost)
       );
@@ -105,13 +105,13 @@ const CreateAnnouncement: React.FC<Props> = ({
           description: description.trim(),
           postingDays: postingDaysUTC as string[],
           scheduledTime: scheduledTimeUTC,
-          topicId: questionOptions.topicToPost,
+          topicId: "No topic",
           dueDate:
             questionOptions.dueDate === "No due date"
               ? undefined
               : questionOptions.dueDate,
           dueTime: questionOptions.dueTime,
-          submissionModifiable: false,
+          submissionModifiable: questionOptions.submissionModifiable,
           maxPoints:
             questionOptions.points === "Ungraded" ? 0 : questionOptions.points,
         },
