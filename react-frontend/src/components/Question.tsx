@@ -70,7 +70,7 @@ const Question: React.FC<Props> = ({
   setDeletingId,
 }) => {
   const classes = useStyles();
-  const setEditingPostId = useContext(EditingContext)!;
+  const [setEditingPostId, setCreatingPostType] = useContext(EditingContext)!;
   const { title, description, postingDays, scheduledTime, questionId } =
     question;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -110,7 +110,12 @@ const Question: React.FC<Props> = ({
         open={Boolean(anchorElement)}
         onClose={() => setAnchorElement(null)}
       >
-        <MenuItem onClick={() => setEditingPostId(questionId!)}>
+        <MenuItem
+          onClick={() => {
+            setEditingPostId!(questionId!);
+            setCreatingPostType!("question");
+          }}
+        >
           <EditIcon className={classes.actionIcon} /> Edit
         </MenuItem>
         <MenuItem

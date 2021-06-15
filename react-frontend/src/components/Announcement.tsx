@@ -70,7 +70,7 @@ const Announcement: React.FC<Props> = ({
   setDeletingId,
 }) => {
   const classes = useStyles();
-  const setEditingPostId = useContext(EditingContext)!;
+  const [setEditingPostId, setCreatingPostType] = useContext(EditingContext)!;
   const {
     title,
     announcementText,
@@ -115,7 +115,12 @@ const Announcement: React.FC<Props> = ({
         open={Boolean(anchorElement)}
         onClose={() => setAnchorElement(null)}
       >
-        <MenuItem onClick={() => setEditingPostId(announcementId!)}>
+        <MenuItem
+          onClick={() => {
+            setEditingPostId!(announcementId!);
+            setCreatingPostType!("announcement");
+          }}
+        >
           <EditIcon className={classes.actionIcon} /> Edit
         </MenuItem>
         <MenuItem

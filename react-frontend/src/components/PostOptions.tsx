@@ -91,6 +91,43 @@ const PostOptions: React.FC<Props> = ({
     });
   }, [daysToPost, coursesToPost, setReadyToSubmit, timeToPost, setOptions]);
 
+  useEffect(() => {
+    //editingAnnouncement is initially undefined when state variables are set
+    if (editingAnnouncement) {
+      setCoursesToPost(
+        courses.map((course) => ({
+          isSelected:
+            editingAnnouncement &&
+            editingAnnouncement.courseIds?.includes(course.courseId)
+              ? true
+              : false,
+          ...course,
+        }))
+      );
+      setDaysToPost(
+        editingAnnouncement.postingDays!.map((day) =>
+          getLocalDayToPost(day as WeekDay, editingAnnouncement.scheduledTime!)
+        )
+      );
+      setDayToPostSelection("Custom");
+      setTimeToPost(() => {
+        const localTime = getLocalScheduledTime(
+          editingAnnouncement.scheduledTime!
+        );
+        const hours = Number(localTime.substring(0, 2));
+        if (localTime.substring(5, 7) === "am")
+          return `${hours === 12 ? hours + 12 : hours}${localTime.substring(
+            2,
+            5
+          )}`;
+        return `${hours === 12 ? hours : hours + 12}${localTime.substring(
+          2,
+          5
+        )}`;
+      });
+    }
+  }, [courses, editingAnnouncement]);
+
   return (
     <Box width="100%">
       <FormLabel component="legend">For </FormLabel>

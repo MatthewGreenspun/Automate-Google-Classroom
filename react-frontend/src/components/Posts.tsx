@@ -26,10 +26,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const EditingContext =
-  createContext<React.Dispatch<React.SetStateAction<string | null>> | null>(
-    null
-  );
+export const EditingContext = createContext<
+  [
+    React.Dispatch<React.SetStateAction<string | null>> | null,
+    React.Dispatch<
+      React.SetStateAction<"announcement" | "question" | null>
+    > | null
+  ]
+>([null, null]);
 
 const Posts: React.FC<Props> = ({ user }) => {
   const classes = useStyles();
@@ -84,9 +88,8 @@ const Posts: React.FC<Props> = ({ user }) => {
     // );
     return saQuestions;
   });
-
   return (
-    <EditingContext.Provider value={setEditingPostId}>
+    <EditingContext.Provider value={[setEditingPostId, setCreatingPostType]}>
       <Box
         display="flex"
         justifyContent="center"

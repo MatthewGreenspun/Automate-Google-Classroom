@@ -185,12 +185,19 @@ const CreateAnnouncement: React.FC<Props> = ({
           onSuccess: () => {
             setEditingPostId(null);
             refetchAnnouncements();
+            setCreatingPostType(null);
           },
         });
       } else setEditingPostId(null);
     }
   }
   const classes = useCreatePostStyles();
+  useEffect(() => {
+    if (editingAnnouncement) {
+      setTitle(editingAnnouncement.title!);
+      setAnnouncementText(editingAnnouncement.announcementText!);
+    }
+  }, [editingAnnouncement]);
 
   return (
     <Box
