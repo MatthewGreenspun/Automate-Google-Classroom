@@ -4,14 +4,12 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Question from "./Question";
 import DeleteDialog from "./DeleteDialog";
-import { QueryObserverResult, RefetchOptions, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import axios from "axios";
 
 export interface Props {
   questions: Question[];
-  refetchQuestions: (
-    options?: RefetchOptions | undefined
-  ) => Promise<QueryObserverResult<Question[], unknown>>;
+  refetchQuestions: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>

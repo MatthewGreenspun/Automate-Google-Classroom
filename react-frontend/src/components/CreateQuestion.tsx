@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { QueryObserverResult, RefetchOptions, useMutation } from "react-query";
+import { useMutation } from "react-query";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
@@ -15,9 +15,7 @@ import { getUTCDayToPost } from "../utils/getUTCDayToPost";
 import { useCreatePostStyles } from "./CreateAnnouncement";
 
 interface Props {
-  refetchQuestions: (
-    options?: RefetchOptions | undefined
-  ) => Promise<QueryObserverResult<Question[], unknown>>;
+  refetchQuestions: () => void;
   isEditing: boolean;
   setEditingPostId: React.Dispatch<React.SetStateAction<string | null>>;
   setCreatingPostType: React.Dispatch<

@@ -12,6 +12,7 @@ import Questions from "./Questions";
 import SessionExpiredAlert from "./SessionExpiredAlert";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { useQuestions } from "../utils/useQuestions";
 
 interface Props {
   user: User | null;
@@ -74,20 +75,9 @@ const Posts: React.FC<Props> = ({ user }) => {
     );
     return data;
   });
-  const {
-    data: questions,
-    isLoading: questionsIsLoading,
-    refetch: refetchQuestions,
-  } = useQuery<Question[]>("questions", async (): Promise<Question[]> => {
-    const { data: saQuestions } = await axios.get(
-      "http://localhost:8080/api/v1/users/saquestions"
-    );
 
-    // const { data: mcQuestions } = await axios.get(
-    //   "http://localhost:8080/api/v1/users/mcquestions"
-    // );
-    return saQuestions;
-  });
+  const { questions, questionsAreLoading, refetchQuestions } = useQuestions();
+
   return (
     <EditingContext.Provider value={[setEditingPostId, setCreatingPostType]}>
       <Box
@@ -120,7 +110,7 @@ const Posts: React.FC<Props> = ({ user }) => {
           )}
 
         {!(!!creatingPostType || isEditingPost) &&
-          !questionsIsLoading &&
+          !questionsAreLoading &&
           questions &&
           questions.length > 0 && (
             <Questions

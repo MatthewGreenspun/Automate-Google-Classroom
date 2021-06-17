@@ -110,7 +110,7 @@ router.get("/mcquestions", checkAuthorization, async (req, res) => {
   const { rows }: { rows: DatabaseMcQuestion[] } = await pool.query(
     `SELECT 
       mc_question_id AS question_id, description, due_date, due_time, max_points, submission_modifiable, topic_id, course_ids, title, scheduled_time, posting_days, choices
-      FROM short_answer_questions 
+      FROM multiple_choice_questions 
       WHERE user_id = $1`,
     [(req.user as DatabaseUserData).user_id]
   );
