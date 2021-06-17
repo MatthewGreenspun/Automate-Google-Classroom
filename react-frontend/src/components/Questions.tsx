@@ -29,16 +29,22 @@ const Announcements: React.FC<Props> = ({ questions, refetchQuestions }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deletingId, setDeletingId] = useState("");
 
-  const mutation = useMutation((_) =>
-    axios.delete(
-      `http://localhost:8080/api/v1/deletepost/announcement/${deletingId}`
-    )
+  const mutation = useMutation(
+    () => {
+      const questionType = questions.filter(
+        ({ questionId }) => questionId === deletingId
+      )[0].type;
+
+      return axios.delete(
+        `http://localhost:8080/api/v1/deletepost/${questionType}question/${deletingId}`
+      );
+    },
+    { onSuccess: () => refetchQuestions() }
   );
 
   function handleDelete() {
     setIsDeleting(false);
     mutation.mutate();
-    refetchQuestions();
   }
 
   return (
