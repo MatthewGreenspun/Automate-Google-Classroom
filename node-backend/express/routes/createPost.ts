@@ -80,7 +80,62 @@ router.post("/saquestion", checkAuthorization, (req, res) => {
     .then(() => res.status(200).send({ message: "success" }))
     .catch((err) => {
       console.error(err);
-      res.status(500).send({ error: err });
+      res.status(500).send({ message: "error" });
+    });
+});
+
+router.post("/mcquestion", checkAuthorization, (req, res) => {
+  const {
+    courseIds,
+    topicId,
+    title,
+    description,
+    postingDays,
+    scheduledTime,
+    dueDate,
+    dueTime,
+    submissionModifiable,
+    maxPoints,
+    choices,
+  }: {
+    courseIds?: string[];
+    topicId?: string;
+    title?: string;
+    description?: string;
+    postingDays?: string[];
+    scheduledTime?: string;
+    dueDate?: string;
+    dueTime?: string;
+    submissionModifiable?: boolean;
+    maxPoints?: number;
+    choices: string[];
+  } = req.body;
+  const { user_id: userId } = req.user as DatabaseUserData;
+
+  pool
+    .query(
+      `INSERT INTO multiple_choice_questions 
+      (mc_question_id, user_id, course_ids,topic_id, title, description, scheduled_time, posting_days, last_posted, due_date, due_time, submission_modifiable, max_points, choices) 
+      VALUES(uuid_generate_v4(), $1, $2, $3, $4, $5, $6, $7, NOW(), $8, $9, $10, $11, $12)`,
+      [
+        userId,
+        courseIds,
+        topicId,
+        title,
+        description,
+        scheduledTime,
+        postingDays,
+        dueDate,
+        dueTime,
+        submissionModifiable,
+        maxPoints,
+        choices,
+      ]
+    )
+    .then(() => res.status(200).send({ message: "success" }))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send({ message: "error" });
     });
 });
 
