@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import { QueryObserverResult, RefetchOptions, useMutation } from "react-query";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
+import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import PostOptions from "./PostOptions";
@@ -57,6 +61,7 @@ const CreateAnnouncement: React.FC<Props> = ({
   const [description, setDescription] = useState(
     editingQuestion ? editingQuestion.description! : ""
   );
+  const [choices, setChoices] = useState([{ id: 1, val: "Choice 1" }]);
   const [coursesError, setCoursesError] = useState(false);
   const [daysError, setDaysError] = useState(false);
 
@@ -114,6 +119,10 @@ const CreateAnnouncement: React.FC<Props> = ({
           submissionModifiable: questionOptions.submissionModifiable,
           maxPoints:
             questionOptions.points === "Ungraded" ? 0 : questionOptions.points,
+          choices:
+            questionOptions.questionType === "mc"
+              ? choices.map(({ val }) => val)
+              : undefined,
         },
         {
           onSuccess: () => {
@@ -187,7 +196,7 @@ const CreateAnnouncement: React.FC<Props> = ({
       width="100%"
       border={1}
       borderRadius={4}
-      borderColor="primary"
+      borderColor="#4285f4"
       p={2}
       m={2}
       className={classes.outerContainer}
@@ -220,7 +229,62 @@ const CreateAnnouncement: React.FC<Props> = ({
           onChange={(e) => setDescription(e.target.value)}
           disabled={postMutation.isLoading}
         />
+
+        {questionOptions.questionType === "mc" &&
+          choices.map((choice) => (
+            <Box
+              display="flex"
+              alignItems="center"
+              key={choice.id}
+              marginBottom={1}
+            >
+              <RadioButtonCheckedIcon
+                color="secondary"
+                style={{ marginRight: "7px" }}
+              />
+              <TextField
+                fullWidth
+                value={choice.val}
+                onChange={(e) =>
+                  setChoices(
+                    choices.map(({ id, val }) =>
+                      id === choice.id
+                        ? { id, val: e.target.value }
+                        : { id, val }
+                    )
+                  )
+                }
+              />
+              {choices.length > 1 && (
+                <IconButton
+                  onClick={() =>
+                    setChoices(choices.filter(({ id }) => choice.id !== id))
+                  }
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </Box>
+          ))}
+        {questionOptions.questionType === "mc" && (
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() =>
+              setChoices([
+                ...choices,
+                {
+                  id: choices[choices.length - 1].id + 1,
+                  val: "Choice " + (choices.length + 1),
+                },
+              ])
+            }
+          >
+            <AddIcon style={{ marginRight: "7px" }} /> New
+          </Button>
+        )}
       </Box>
+
       <Box className={classes.optionsContainer}>
         <QuestionOptions
           disabled={postMutation.isLoading}
