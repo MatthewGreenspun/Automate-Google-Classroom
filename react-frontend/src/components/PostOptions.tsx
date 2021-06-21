@@ -158,7 +158,7 @@ const PostOptions: React.FC<Props> = ({
           />
         ))}
         {coursesError && (
-          <Alert severity="error">Selet at least one course</Alert>
+          <Alert severity="error">Select at least one course</Alert>
         )}
       </FormGroup>
       <Box display="flex" flexDirection="column">
@@ -219,7 +219,7 @@ const PostOptions: React.FC<Props> = ({
               />
             ))}
             {daysError && (
-              <Alert severity="error">Selet at least one day</Alert>
+              <Alert severity="error">Select at least one day</Alert>
             )}
           </FormGroup>
         )}

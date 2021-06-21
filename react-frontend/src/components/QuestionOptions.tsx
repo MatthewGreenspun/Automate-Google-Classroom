@@ -36,14 +36,7 @@ const QuestionOptions: React.FC<Props> = ({
 
   const [dueDate, setDueDate] =
     useState<"No due date" | "Day posted">("No due date");
-  const [dueTime, setDueTime] = useState(
-    `${
-      editingQuestion
-        ? //prettier-ignore
-          getLocalScheduledTime(editingQuestion.scheduledTime!).substring(0,5) //substring removes am/pm
-        : "07:30"
-    }`
-  );
+  const [dueTime, setDueTime] = useState("07:30");
 
   useEffect(() => {
     setQuestionOptions({
@@ -61,6 +54,23 @@ const QuestionOptions: React.FC<Props> = ({
     submissionModifiable,
     setQuestionOptions,
   ]);
+
+  useEffect(() => {
+    if (editingQuestion) {
+      setQuestionType(editingQuestion.type!);
+      setPoints(
+        editingQuestion.maxPoints === 0
+          ? "Ungraded"
+          : editingQuestion.maxPoints!
+      );
+      setSubmissionModifiable(editingQuestion.submissionModifiable!);
+      setDueDate(editingQuestion.dueDate ? "Day posted" : "No due date");
+      setDueTime(
+        getLocalScheduledTime(editingQuestion.scheduledTime!).substring(0, 5)
+      ); //substring removes am/pm
+      console.log(editingQuestion.dueDate);
+    }
+  }, [editingQuestion]);
 
   return (
     <Box display="flex" flexDirection="column" width="100%">
@@ -107,6 +117,7 @@ const QuestionOptions: React.FC<Props> = ({
         margin="normal"
         label="Due date"
         defaultValue="No due date"
+        value={dueDate}
         onChange={(e) => {
           setDueDate(e.target.value as "No due date" | "Day posted");
         }}

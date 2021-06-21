@@ -19,7 +19,7 @@ interface Question {
   description?: string;
   postingDays?: string[];
   scheduledTime?: string;
-  dueDate?: string;
+  dueDate?: string | null;
   dueTime?: string;
   submissionModifiable?: boolean;
   maxPoints?: number;

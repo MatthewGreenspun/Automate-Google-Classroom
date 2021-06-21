@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useMutation } from "react-query";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
-import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
+import RadioButtonUnchecked from "@material-ui/icons/RadioButtonUnchecked";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
@@ -25,7 +25,7 @@ interface Props {
   editingQuestion?: Question;
 }
 
-const CreateAnnouncement: React.FC<Props> = ({
+const CreateQuestion: React.FC<Props> = ({
   courses,
   setCreatingPostType,
   isEditing,
@@ -52,13 +52,9 @@ const CreateAnnouncement: React.FC<Props> = ({
     dueTime: "07:30:00",
     submissionModifiable: false,
   });
-  const [title, setTitle] = useState(
-    editingQuestion ? editingQuestion.title! : ""
-  );
+  const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState(false);
-  const [description, setDescription] = useState(
-    editingQuestion ? editingQuestion.description! : ""
-  );
+  const [description, setDescription] = useState("");
   const [choices, setChoices] = useState([{ id: 1, val: "Choice 1" }]);
   const [coursesError, setCoursesError] = useState(false);
   const [daysError, setDaysError] = useState(false);
@@ -100,6 +96,7 @@ const CreateAnnouncement: React.FC<Props> = ({
         getUTCDayToPost(day as WeekDay, options.timeToPost)
       );
       const scheduledTimeUTC = getUTCScheduledTime(options.timeToPost);
+      const dueTimeUTC = getUTCScheduledTime(questionOptions.dueTime);
 
       postMutation.mutate(
         {
@@ -111,9 +108,9 @@ const CreateAnnouncement: React.FC<Props> = ({
           topicId: "No topic",
           dueDate:
             questionOptions.dueDate === "No due date"
-              ? undefined
+              ? null
               : questionOptions.dueDate,
-          dueTime: questionOptions.dueTime,
+          dueTime: dueTimeUTC,
           submissionModifiable: questionOptions.submissionModifiable,
           maxPoints:
             questionOptions.points === "Ungraded" ? 0 : questionOptions.points,
@@ -140,6 +137,8 @@ const CreateAnnouncement: React.FC<Props> = ({
         getUTCDayToPost(day as WeekDay, options.timeToPost)
       );
       const scheduledTimeUTC = getUTCScheduledTime(options.timeToPost);
+      const dueTimeUTC = getUTCScheduledTime(questionOptions.dueTime);
+
       const newQuestion = {
         courseIds:
           JSON.stringify(options.coursesToPost) !==
@@ -161,6 +160,36 @@ const CreateAnnouncement: React.FC<Props> = ({
           scheduledTimeUTC !== editingQuestion!.scheduledTime
             ? scheduledTimeUTC
             : undefined,
+        topicId: undefined,
+        dueDate:
+          questionOptions.dueDate === editingQuestion!.dueDate ||
+          (questionOptions.dueDate === "No due date" &&
+            editingQuestion!.dueDate === null)
+            ? undefined
+            : questionOptions.dueDate === "No due date"
+            ? undefined
+            : questionOptions.dueDate,
+        dueTime:
+          dueTimeUTC !== editingQuestion!.dueTime ? dueTimeUTC : undefined,
+        submissionModifiable:
+          questionOptions.submissionModifiable !==
+          editingQuestion!.submissionModifiable
+            ? questionOptions.submissionModifiable
+            : undefined,
+        maxPoints:
+          (questionOptions.points === "Ungraded" &&
+            editingQuestion!.maxPoints === 0) ||
+          questionOptions.points === editingQuestion!.maxPoints
+            ? undefined
+            : questionOptions.points === "Ungraded"
+            ? 0
+            : questionOptions.points,
+        choices:
+          JSON.stringify(choices) === JSON.stringify(editingQuestion!.choices)
+            ? undefined
+            : questionOptions.questionType === "mc"
+            ? choices.map(({ val }) => val)
+            : undefined,
       };
 
       if (
@@ -179,6 +208,7 @@ const CreateAnnouncement: React.FC<Props> = ({
       ) {
         editMutation.mutate(newQuestion, {
           onSuccess: () => {
+            setCreatingPostType(null);
             setEditingPostId(null);
             refetchQuestions();
           },
@@ -186,7 +216,29 @@ const CreateAnnouncement: React.FC<Props> = ({
       } else setEditingPostId(null);
     }
   }
+
   const classes = useCreatePostStyles();
+  useEffect(() => {
+    if (editingQuestion) {
+      setTitle(editingQuestion.title!);
+      setDescription(editingQuestion.description!);
+      if (editingQuestion.type === "mc")
+        setChoices(
+          editingQuestion.choices!.reduce(
+            (
+              acc: Array<{ val: string; id: number }>,
+              curr: string,
+              idx: number
+            ) => {
+              if (idx === 0) return [{ val: curr, id: 1 }];
+              else
+                return [...acc, { val: curr, id: acc[acc.length - 1].id + 1 }];
+            },
+            []
+          )
+        );
+    }
+  }, [editingQuestion]);
 
   return (
     <Box
@@ -236,7 +288,7 @@ const CreateAnnouncement: React.FC<Props> = ({
               key={choice.id}
               marginBottom={1}
             >
-              <RadioButtonCheckedIcon
+              <RadioButtonUnchecked
                 color="secondary"
                 style={{ marginRight: "7px" }}
               />
@@ -288,6 +340,7 @@ const CreateAnnouncement: React.FC<Props> = ({
           disabled={postMutation.isLoading}
           topics={[]}
           setQuestionOptions={setQuestionOptions}
+          editingQuestion={editingQuestion}
         />
         <PostOptions
           disabled={postMutation.isLoading}
@@ -311,4 +364,4 @@ const CreateAnnouncement: React.FC<Props> = ({
   );
 };
 
-export default CreateAnnouncement;
+export default CreateQuestion;
