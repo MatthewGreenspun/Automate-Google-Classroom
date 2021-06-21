@@ -51,8 +51,8 @@ router.post("/saquestion", checkAuthorization, (req, res) => {
     description?: string;
     postingDays?: string[];
     scheduledTime?: string;
-    dueDate?: string;
-    dueTime?: string;
+    dueDate?: string | null;
+    dueTime?: string | null;
     submissionModifiable?: boolean;
     maxPoints?: number;
   } = req.body;
@@ -104,8 +104,8 @@ router.post("/mcquestion", checkAuthorization, (req, res) => {
     description?: string;
     postingDays?: string[];
     scheduledTime?: string;
-    dueDate?: string;
-    dueTime?: string;
+    dueDate?: string | null;
+    dueTime?: string | null;
     submissionModifiable?: boolean;
     maxPoints?: number;
     choices: string[];

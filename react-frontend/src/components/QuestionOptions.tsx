@@ -68,7 +68,6 @@ const QuestionOptions: React.FC<Props> = ({
       setDueTime(
         getLocalScheduledTime(editingQuestion.scheduledTime!).substring(0, 5)
       ); //substring removes am/pm
-      console.log(editingQuestion.dueDate);
     }
   }, [editingQuestion]);
 

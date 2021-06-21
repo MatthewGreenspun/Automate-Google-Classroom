@@ -110,7 +110,8 @@ const CreateQuestion: React.FC<Props> = ({
             questionOptions.dueDate === "No due date"
               ? null
               : questionOptions.dueDate,
-          dueTime: dueTimeUTC,
+          dueTime:
+            questionOptions.dueDate === "No due date" ? null : dueTimeUTC,
           submissionModifiable: questionOptions.submissionModifiable,
           maxPoints:
             questionOptions.points === "Ungraded" ? 0 : questionOptions.points,
@@ -167,10 +168,14 @@ const CreateQuestion: React.FC<Props> = ({
             editingQuestion!.dueDate === null)
             ? undefined
             : questionOptions.dueDate === "No due date"
-            ? undefined
+            ? null
             : questionOptions.dueDate,
         dueTime:
-          dueTimeUTC !== editingQuestion!.dueTime ? dueTimeUTC : undefined,
+          dueTimeUTC === editingQuestion!.dueTime
+            ? undefined
+            : questionOptions.dueDate === "No due date"
+            ? null
+            : dueTimeUTC,
         submissionModifiable:
           questionOptions.submissionModifiable !==
           editingQuestion!.submissionModifiable

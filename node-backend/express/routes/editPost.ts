@@ -107,15 +107,15 @@ router.put("/saquestion/:id", checkAuthorization, (req, res) => {
     description?: string;
     scheduledTime?: string;
     postingDays?: string[];
-    dueDate?: string;
-    dueTime?: string;
+    dueDate?: string | null;
+    dueTime?: string | null;
     submissionModifiable?: boolean;
     maxPoints?: number;
   } = req.body;
 
   let currParam = 3;
   let changedFields = 0;
-  let newValues: Array<string | string[] | boolean | number> = [];
+  let newValues: Array<string | string[] | boolean | number | null> = [];
   for (let option of [
     courseIds,
     title,
@@ -173,14 +173,14 @@ router.put("/saquestion/:id", checkAuthorization, (req, res) => {
             : ""
         } 
         ${
-          dueDate
+          dueDate !== undefined
             ? `due_date = $${currParam++}${
                 currParam - 3 !== changedFields ? "," : ""
               }`
             : ""
         } 
         ${
-          dueTime
+          dueTime !== undefined
             ? `due_time = $${currParam++}${
                 currParam - 3 !== changedFields ? "," : ""
               }`
@@ -231,8 +231,8 @@ router.put("/mcquestion/:id", checkAuthorization, (req, res) => {
     description?: string;
     scheduledTime?: string;
     postingDays?: string[];
-    dueDate?: string;
-    dueTime?: string;
+    dueDate?: string | null;
+    dueTime?: string | null;
     submissionModifiable?: boolean;
     maxPoints?: number;
     choices: string[];
@@ -240,7 +240,7 @@ router.put("/mcquestion/:id", checkAuthorization, (req, res) => {
 
   let currParam = 3;
   let changedFields = 0;
-  let newValues: Array<string | string[] | boolean | number> = [];
+  let newValues: Array<string | string[] | boolean | number | null> = [];
   for (let option of [
     courseIds,
     title,
@@ -299,14 +299,14 @@ router.put("/mcquestion/:id", checkAuthorization, (req, res) => {
             : ""
         } 
         ${
-          dueDate
+          dueDate !== undefined
             ? `due_date = $${currParam++}${
                 currParam - 3 !== changedFields ? "," : ""
               }`
             : ""
         } 
         ${
-          dueTime
+          dueTime !== undefined
             ? `due_time = $${currParam++}${
                 currParam - 3 !== changedFields ? "," : ""
               }`
