@@ -8,7 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Alert from "@material-ui/lab/Alert";
-import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
+import { formatLocal } from "../utils/getLocalInputTime";
 import { getLocalDayToPost } from "../utils/getLocalDayToPost";
 
 const daysOfTheWeek = [
@@ -71,7 +71,7 @@ const PostOptions: React.FC<Props> = ({
     `${
       editingAnnouncement
         ? //prettier-ignore
-          getLocalScheduledTime(editingAnnouncement.scheduledTime!).substring(0,5) //substring removes am/pm
+          formatLocal(editingAnnouncement.scheduledTime!)
         : "07:30"
     }:00`
   );
@@ -110,21 +110,7 @@ const PostOptions: React.FC<Props> = ({
         )
       );
       setDayToPostSelection("Custom");
-      setTimeToPost(() => {
-        const localTime = getLocalScheduledTime(
-          editingAnnouncement.scheduledTime!
-        );
-        const hours = Number(localTime.substring(0, 2));
-        if (localTime.substring(5, 7) === "am")
-          return `${hours === 12 ? hours + 12 : hours}${localTime.substring(
-            2,
-            5
-          )}`;
-        return `${hours === 12 ? hours : hours + 12}${localTime.substring(
-          2,
-          5
-        )}`;
-      });
+      setTimeToPost(formatLocal(editingAnnouncement.scheduledTime!));
     }
   }, [courses, editingAnnouncement]);
 

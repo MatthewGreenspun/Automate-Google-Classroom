@@ -7,7 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { getLocalScheduledTime } from "../utils/getLocalScheduledTime";
+import { formatLocal } from "../utils/getLocalInputTime";
 
 interface Props {
   disabled: boolean;
@@ -34,8 +34,9 @@ const QuestionOptions: React.FC<Props> = ({
   const [points, setPoints] = useState<number | "Ungraded">(100);
   const [submissionModifiable, setSubmissionModifiable] = useState(false);
 
-  const [dueDate, setDueDate] =
-    useState<"No due date" | "Day posted">("No due date");
+  const [dueDate, setDueDate] = useState<"No due date" | "Day posted">(
+    "No due date"
+  );
   const [dueTime, setDueTime] = useState("07:30");
 
   useEffect(() => {
@@ -65,9 +66,7 @@ const QuestionOptions: React.FC<Props> = ({
       );
       setSubmissionModifiable(editingQuestion.submissionModifiable!);
       setDueDate(editingQuestion.dueDate ? "Day posted" : "No due date");
-      setDueTime(
-        getLocalScheduledTime(editingQuestion.scheduledTime!).substring(0, 5)
-      ); //substring removes am/pm
+      setDueTime(formatLocal(editingQuestion.scheduledTime!));
     }
   }, [editingQuestion]);
 

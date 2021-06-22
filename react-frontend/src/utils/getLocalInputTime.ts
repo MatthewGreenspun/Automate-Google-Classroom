@@ -18,5 +18,7 @@ export function formatLocal(utcTime: string) {
   const localHours = localDate.getHours();
   const localMinutes = localDate.getMinutes();
 
-  return `${localHours < 10 ? "0" : ""}${localHours}:${localMinutes}`;
+  return `${localHours < 10 ? "0" : ""}${localHours}:${
+    localMinutes < 10 ? "0" : ""
+  }${localMinutes}`;
 }

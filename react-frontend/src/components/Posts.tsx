@@ -39,8 +39,9 @@ export const EditingContext = createContext<
 const Posts: React.FC<Props> = ({ user }) => {
   const classes = useStyles();
 
-  const [creatingPostType, setCreatingPostType] =
-    useState<null | "announcement" | "question">(null);
+  const [creatingPostType, setCreatingPostType] = useState<
+    null | "announcement" | "question"
+  >(null);
   const [isEditingPost, setIsEditingPost] = useState(false);
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
   const [sessionExpired, setSessionExpired] = useState(false);
@@ -67,14 +68,15 @@ const Posts: React.FC<Props> = ({ user }) => {
     data: announcements,
     isLoading: AnnouncementsIsLoading,
     refetch: refetchAnnouncements,
-  } = useQuery<Announcement[]>("announcements", async (): Promise<
-    Announcement[]
-  > => {
-    const { data } = await axios.get(
-      "http://localhost:8080/api/v1/users/announcements"
-    );
-    return data;
-  });
+  } = useQuery<Announcement[]>(
+    "announcements",
+    async (): Promise<Announcement[]> => {
+      const { data } = await axios.get(
+        "http://localhost:8080/api/v1/users/announcements"
+      );
+      return data;
+    }
+  );
 
   const { questions, questionsAreLoading, refetchQuestions } = useQuestions();
 
