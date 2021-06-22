@@ -32,25 +32,12 @@ function App() {
         dark: "#102027",
         contrastText: "#fff",
       },
-      text: {
-        secondary: "#fff",
-      },
     },
   });
   theme.typography.h1 = {
     fontSize: "1rem",
     [theme.breakpoints.up("md")]: {
       fontSize: "2.5rem",
-    },
-    color: "#fff",
-  };
-  theme.typography.h4 = {
-    fontSize: "1rem",
-    [theme.breakpoints.up("md")]: {
-      fontSize: "1.5rem",
-    },
-    [theme.breakpoints.up("lg")]: {
-      fontSize: "2.3rem",
     },
     color: "#fff",
   };
