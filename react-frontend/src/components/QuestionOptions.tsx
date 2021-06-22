@@ -66,7 +66,11 @@ const QuestionOptions: React.FC<Props> = ({
       );
       setSubmissionModifiable(editingQuestion.submissionModifiable!);
       setDueDate(editingQuestion.dueDate ? "Day posted" : "No due date");
-      setDueTime(formatLocal(editingQuestion.scheduledTime!));
+      setDueTime(
+        editingQuestion.dueTime
+          ? formatLocal(editingQuestion.dueTime!)
+          : "11:59"
+      );
     }
   }, [editingQuestion]);
 
