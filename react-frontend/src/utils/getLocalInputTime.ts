@@ -1,4 +1,4 @@
-export function getLocalScheduledTime(utcTime: string) {
+export function formatLocal(utcTime: string) {
   const utcHours = Number(utcTime.substring(0, 2));
   const utcMinutes = Number(utcTime.substring(3, 5));
 
@@ -18,9 +18,5 @@ export function getLocalScheduledTime(utcTime: string) {
   const localHours = localDate.getHours();
   const localMinutes = localDate.getMinutes();
 
-  return `${
-    localHours < 13 ? (localHours === 0 ? 12 : localHours) : localHours - 12
-  }:${(localMinutes < 10 ? "0" : "") + localMinutes}${
-    localHours < 12 ? "am" : "pm"
-  }`;
+  return `${localHours < 10 ? "0" : ""}${localHours}:${localMinutes}`;
 }
