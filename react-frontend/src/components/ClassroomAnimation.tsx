@@ -179,16 +179,16 @@ export default function ClassroomAnimation() {
               xlinkHref="#d16Rh7OBqT"
               opacity="1"
               fill="#0b6be3"
-              fill-opacity="1"
+              fillOpacity="1"
             ></use>
             <g>
               <use
                 xlinkHref="#d16Rh7OBqT"
                 opacity="1"
-                fill-opacity="0"
+                fillOpacity="0"
                 stroke="#393978"
-                stroke-width="0"
-                stroke-opacity="1"
+                strokeWidth="0"
+                strokeOpacity="1"
               ></use>
             </g>
           </g>
@@ -197,16 +197,16 @@ export default function ClassroomAnimation() {
               xlinkHref="#b3svocXSyw"
               opacity="1"
               fill="#ffffff"
-              fill-opacity="1"
+              fillOpacity="1"
             ></use>
             <g mask="url(#masklLDjhOCFs)">
               <use
                 xlinkHref="#b3svocXSyw"
                 opacity="1"
-                fill-opacity="0"
+                fillOpacity="0"
                 stroke="#959595"
-                stroke-width="2"
-                stroke-opacity="1"
+                strokeWidth="2"
+                strokeOpacity="1"
               ></use>
             </g>
           </g>
@@ -215,16 +215,16 @@ export default function ClassroomAnimation() {
               xlinkHref="#b51Fa1Nspe"
               opacity="1"
               fill="#ffffff"
-              fill-opacity="1"
+              fillOpacity="1"
             ></use>
             <g mask="url(#maskd12WD7xQbg)">
               <use
                 xlinkHref="#b51Fa1Nspe"
                 opacity="1"
-                fill-opacity="0"
+                fillOpacity="0"
                 stroke="#959595"
-                stroke-width="2"
-                stroke-opacity="1"
+                strokeWidth="2"
+                strokeOpacity="1"
               ></use>
             </g>
           </g>
@@ -234,16 +234,16 @@ export default function ClassroomAnimation() {
                 xlinkHref="#a1ZELCUXgS"
                 opacity="1"
                 fill="#114280"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
               <g>
                 <use
                   xlinkHref="#a1ZELCUXgS"
                   opacity="1"
-                  fill-opacity="0"
+                  fillOpacity="0"
                   stroke="#959595"
-                  stroke-width="1"
-                  stroke-opacity="1"
+                  strokeWidth="1"
+                  strokeOpacity="1"
                 ></use>
               </g>
             </g>
@@ -252,7 +252,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#a2M89y867G"
                 opacity="1"
                 fill="#aeaeae"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
             <g>
@@ -260,7 +260,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#eA51wwUmU"
                 opacity="1"
                 fill="#aeaeae"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
           </g>
@@ -270,16 +270,16 @@ export default function ClassroomAnimation() {
                 xlinkHref="#g34kYpFLYz"
                 opacity="1"
                 fill="#ffffff"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
               <g mask="url(#maska9ptY9YF4t)">
                 <use
                   xlinkHref="#g34kYpFLYz"
                   opacity="1"
-                  fill-opacity="0"
+                  fillOpacity="0"
                   stroke="#959595"
-                  stroke-width="2"
-                  stroke-opacity="1"
+                  strokeWidth="2"
+                  strokeOpacity="1"
                 ></use>
               </g>
             </g>
@@ -288,16 +288,16 @@ export default function ClassroomAnimation() {
                 xlinkHref="#e1KhnSyQLu"
                 opacity="1"
                 fill="#275895"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
               <g>
                 <use
                   xlinkHref="#e1KhnSyQLu"
                   opacity="1"
-                  fill-opacity="0"
+                  fillOpacity="0"
                   stroke="#959595"
-                  stroke-width="1"
-                  stroke-opacity="1"
+                  strokeWidth="1"
+                  strokeOpacity="1"
                 ></use>
               </g>
             </g>
@@ -307,17 +307,17 @@ export default function ClassroomAnimation() {
                   xlinkHref="#a4Xp4tqCOI"
                   opacity="1"
                   fill="#114280"
-                  fill-opacity="1"
+                  fillOpacity="1"
                 ></use>
                 <g>
                   <g>
                     <use
                       xlinkHref="#a4Xp4tqCOI"
                       opacity="1"
-                      fill-opacity="0"
+                      fillOpacity="0"
                       stroke="#959595"
-                      stroke-width="1"
-                      stroke-opacity="1"
+                      strokeWidth="1"
+                      strokeOpacity="1"
                     ></use>
                   </g>
                 </g>
@@ -326,7 +326,7 @@ export default function ClassroomAnimation() {
                     xlinkHref="#aBragUPsa"
                     opacity="1"
                     fill="#aeaeae"
-                    fill-opacity="1"
+                    fillOpacity="1"
                   ></use>
                 </g>
                 <g>
@@ -334,7 +334,7 @@ export default function ClassroomAnimation() {
                     xlinkHref="#b1mrD4KGKf"
                     opacity="1"
                     fill="#aeaeae"
-                    fill-opacity="1"
+                    fillOpacity="1"
                   ></use>
                 </g>
               </g>
@@ -345,17 +345,17 @@ export default function ClassroomAnimation() {
                   xlinkHref="#bm00wM1mp"
                   opacity="1"
                   fill="#114280"
-                  fill-opacity="1"
+                  fillOpacity="1"
                 ></use>
                 <g>
                   <g>
                     <use
                       xlinkHref="#bm00wM1mp"
                       opacity="1"
-                      fill-opacity="0"
+                      fillOpacity="0"
                       stroke="#959595"
-                      stroke-width="1"
-                      stroke-opacity="1"
+                      strokeWidth="1"
+                      strokeOpacity="1"
                     ></use>
                   </g>
                 </g>
@@ -364,7 +364,7 @@ export default function ClassroomAnimation() {
                     xlinkHref="#c11isTjymb"
                     opacity="1"
                     fill="#aeaeae"
-                    fill-opacity="1"
+                    fillOpacity="1"
                   ></use>
                 </g>
                 <g>
@@ -372,7 +372,7 @@ export default function ClassroomAnimation() {
                     xlinkHref="#d3BRpC5in"
                     opacity="1"
                     fill="#aeaeae"
-                    fill-opacity="1"
+                    fillOpacity="1"
                   ></use>
                 </g>
               </g>
@@ -383,7 +383,7 @@ export default function ClassroomAnimation() {
               xlinkHref="#b1W6mI76XF"
               opacity="1"
               fill="#3b78de"
-              fill-opacity="1"
+              fillOpacity="1"
             ></use>
           </g>
           <g>
@@ -392,7 +392,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#i133G1AzrD"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
             <g>
@@ -400,7 +400,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#bss1wRoqB"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
           </g>
@@ -409,7 +409,7 @@ export default function ClassroomAnimation() {
               xlinkHref="#a4jGHaek6m"
               opacity="1"
               fill="#3b78de"
-              fill-opacity="1"
+              fillOpacity="1"
             ></use>
           </g>
           <g>
@@ -417,7 +417,7 @@ export default function ClassroomAnimation() {
               xlinkHref="#aL22R08hF"
               opacity="1"
               fill="#3b78de"
-              fill-opacity="1"
+              fillOpacity="1"
             ></use>
           </g>
           <g>
@@ -426,7 +426,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#d5gV3drrC3"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
             <g>
@@ -434,7 +434,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#aSuOiizRe"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
             <g>
@@ -442,7 +442,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#bqAsF94J3"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
             <g>
@@ -450,7 +450,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#a482IUctvc"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
             <g>
@@ -458,7 +458,7 @@ export default function ClassroomAnimation() {
                 xlinkHref="#a2jpDPSnKu"
                 opacity="1"
                 fill="#3b78de"
-                fill-opacity="1"
+                fillOpacity="1"
               ></use>
             </g>
           </g>
@@ -469,16 +469,16 @@ export default function ClassroomAnimation() {
                   xlinkHref="#g24KfE1ugX"
                   opacity="1"
                   fill="#959595"
-                  fill-opacity="1"
+                  fillOpacity="1"
                 ></use>
                 <g>
                   <use
                     xlinkHref="#g24KfE1ugX"
                     opacity="1"
-                    fill-opacity="0"
+                    fillOpacity="0"
                     stroke="#959595"
-                    stroke-width="1"
-                    stroke-opacity="1"
+                    strokeWidth="1"
+                    strokeOpacity="1"
                   ></use>
                 </g>
               </g>
@@ -487,16 +487,16 @@ export default function ClassroomAnimation() {
                   xlinkHref="#be4V3eka8"
                   opacity="1"
                   fill="#c3c3c3"
-                  fill-opacity="1"
+                  fillOpacity="1"
                 ></use>
                 <g>
                   <use
                     xlinkHref="#be4V3eka8"
                     opacity="1"
-                    fill-opacity="0"
+                    fillOpacity="0"
                     stroke="#c3c3c3"
-                    stroke-width="1"
-                    stroke-opacity="1"
+                    strokeWidth="1"
+                    strokeOpacity="1"
                   ></use>
                 </g>
               </g>
@@ -509,16 +509,16 @@ export default function ClassroomAnimation() {
                   xlinkHref="#damB40dpC"
                   opacity="1"
                   fill="#959595"
-                  fill-opacity="1"
+                  fillOpacity="1"
                 ></use>
                 <g>
                   <use
                     xlinkHref="#damB40dpC"
                     opacity="1"
-                    fill-opacity="0"
+                    fillOpacity="0"
                     stroke="#959595"
-                    stroke-width="1"
-                    stroke-opacity="1"
+                    strokeWidth="1"
+                    strokeOpacity="1"
                   ></use>
                 </g>
               </g>
@@ -527,16 +527,16 @@ export default function ClassroomAnimation() {
                   xlinkHref="#a4qFK6QP2T"
                   opacity="1"
                   fill="#c3c3c3"
-                  fill-opacity="1"
+                  fillOpacity="1"
                 ></use>
                 <g>
                   <use
                     xlinkHref="#a4qFK6QP2T"
                     opacity="1"
-                    fill-opacity="0"
+                    fillOpacity="0"
                     stroke="#c3c3c3"
-                    stroke-width="1"
-                    stroke-opacity="1"
+                    strokeWidth="1"
+                    strokeOpacity="1"
                   ></use>
                 </g>
               </g>
