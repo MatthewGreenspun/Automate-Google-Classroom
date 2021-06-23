@@ -25,13 +25,22 @@ export async function postAll() {
           courseId: id,
           requestBody: {
             text: announcement.announcement_text,
-            //scheduledTime: timeToISO(announcement.scheduled_time!),
+            state: "DRAFT",
+            scheduledTime: timeToISO(announcement.scheduled_time!),
           },
         })
-        .then(() => console.log(`created announcement: ${announcement.title}`))
+        .then(() =>
+          console.log(
+            `created announcement: ${announcement.title} for ${timeToISO(
+              announcement.scheduled_time!
+            )}`
+          )
+        )
         .catch((err) =>
           console.error(
-            `error when creating announcement: ${announcement.title}\n${err} `
+            `error when creating announcement: ${
+              announcement.title
+            } for ${timeToISO(announcement.scheduled_time!)} \n${err} `
           )
         );
     });
