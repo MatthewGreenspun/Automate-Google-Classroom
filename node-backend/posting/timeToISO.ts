@@ -5,15 +5,15 @@ export function timeToISO(time: string): string {
   const now = new Date();
   const fullDate = new Date(
     Date.UTC(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + 1,
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
       hours,
       minutes,
       0,
       0
     )
   );
-  console.log(fullDate.toISOString());
+
   return fullDate.toISOString();
 }
