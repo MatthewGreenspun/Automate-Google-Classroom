@@ -47,3 +47,15 @@ interface DatabaseMcQuestion {
   max_points?: number;
   choices?: string[];
 }
+
+interface AnnouncementToPost extends DatabaseAnnouncementData {
+  refresh_token: string;
+}
+
+interface SaQuestionToPost extends DatabaseSaQuestion {
+  refresh_token: string;
+}
+
+interface McQuestionToPost extends DatabaseMcQuestion {
+  refresh_token: string;
+}
