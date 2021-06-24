@@ -24,7 +24,14 @@ router.post("/announcement", checkAuthorization, (req, res) => {
     pool.query(
       `INSERT INTO announcements (announcement_id, user_id, course_ids, title, announcement_text, scheduled_time, posting_days, last_posted) 
       VALUES(uuid_generate_v4(), $1, $2, $3, $4, $5, $6, NOW())`,
-      [userId, courseIds, title, announcementText, scheduledTime, postingDays]
+      [
+        userId,
+        courseIds,
+        title,
+        announcementText.substring(0, 5000),
+        scheduledTime,
+        postingDays,
+      ]
     );
     res.status(200).send({ message: "success" });
   } catch (err) {
@@ -68,7 +75,7 @@ router.post("/saquestion", checkAuthorization, (req, res) => {
         courseIds,
         topicId,
         title,
-        description,
+        description?.substring(0, 5000),
         scheduledTime,
         postingDays,
         dueDate,
@@ -122,7 +129,7 @@ router.post("/mcquestion", checkAuthorization, (req, res) => {
         courseIds,
         topicId,
         title,
-        description,
+        description?.substring(0, 5000),
         scheduledTime,
         postingDays,
         dueDate,

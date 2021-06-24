@@ -28,7 +28,7 @@ router.put("/announcement/:id", checkAuthorization, (req, res) => {
   for (let option of [
     courseIds,
     title,
-    announcementText,
+    announcementText?.substring(0, 5000),
     scheduledTime,
     postingDays,
   ]) {
@@ -119,7 +119,7 @@ router.put("/saquestion/:id", checkAuthorization, (req, res) => {
   for (let option of [
     courseIds,
     title,
-    description,
+    description?.substring(0, 5000),
     scheduledTime,
     postingDays,
     dueDate,
@@ -244,7 +244,7 @@ router.put("/mcquestion/:id", checkAuthorization, (req, res) => {
   for (let option of [
     courseIds,
     title,
-    description,
+    description?.substring(0, 5000),
     scheduledTime,
     postingDays,
     dueDate,
