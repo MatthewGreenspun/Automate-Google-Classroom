@@ -1,5 +1,6 @@
 import pool from "../sql/Pool";
 import { timeToISO } from "./timeToISO";
+import { shouldPostToday } from "./shouldPostToday";
 import { google } from "googleapis";
 
 export async function postAll() {
@@ -14,36 +15,38 @@ export async function postAll() {
    `);
 
   announcements.forEach(async (announcement) => {
-    oAuth2Client.setCredentials({
-      refresh_token: announcement.refresh_token,
-    });
+    if (shouldPostToday(announcement.posting_days!)) {
+      oAuth2Client.setCredentials({
+        refresh_token: announcement.refresh_token,
+      });
 
-    const classroom = google.classroom({ version: "v1", auth: oAuth2Client });
-    announcement.course_ids!.forEach((id) => {
-      classroom.courses.announcements
-        .create({
-          courseId: id,
-          requestBody: {
-            text: announcement.announcement_text,
-            state: "DRAFT",
-            scheduledTime: timeToISO(announcement.scheduled_time!),
-          },
-        })
-        .then(() =>
-          console.log(
-            `created announcement: ${announcement.title} for ${timeToISO(
-              announcement.scheduled_time!
-            )}`
+      const classroom = google.classroom({ version: "v1", auth: oAuth2Client });
+      announcement.course_ids!.forEach((id) => {
+        classroom.courses.announcements
+          .create({
+            courseId: id,
+            requestBody: {
+              text: announcement.announcement_text,
+              state: "DRAFT",
+              scheduledTime: timeToISO(announcement.scheduled_time!),
+            },
+          })
+          .then(() =>
+            console.log(
+              `created announcement: ${announcement.title} for ${timeToISO(
+                announcement.scheduled_time!
+              )}`
+            )
           )
-        )
-        .catch((err) =>
-          console.error(
-            `error when creating announcement: ${
-              announcement.title
-            } for ${timeToISO(announcement.scheduled_time!)} \n${err} `
-          )
-        );
-    });
+          .catch((err) =>
+            console.error(
+              `error when creating announcement: ${
+                announcement.title
+              } for ${timeToISO(announcement.scheduled_time!)} \n${err} `
+            )
+          );
+      });
+    }
   });
 
   const { rows: mcQuestions } = await pool.query<McQuestionToPost>(`
@@ -52,63 +55,67 @@ export async function postAll() {
    `);
 
   mcQuestions.forEach(async (question) => {
-    oAuth2Client.setCredentials({
-      refresh_token: question.refresh_token,
-    });
+    if (shouldPostToday(question.posting_days!)) {
+      oAuth2Client.setCredentials({
+        refresh_token: question.refresh_token,
+      });
 
-    const classroom = google.classroom({ version: "v1", auth: oAuth2Client });
+      const classroom = google.classroom({ version: "v1", auth: oAuth2Client });
 
-    const dueDateTime = question.due_time ? timeToISO(question.due_time) : null;
+      const dueDateTime = question.due_time
+        ? timeToISO(question.due_time)
+        : null;
 
-    question.course_ids!.forEach((id) => {
-      classroom.courses.courseWork
-        .create({
-          courseId: id,
-          requestBody: {
-            title: question.title,
-            description: question.description,
-            workType: "MULTIPLE_CHOICE_QUESTION",
-            state: "DRAFT",
-            multipleChoiceQuestion: {
-              choices: question.choices,
+      question.course_ids!.forEach((id) => {
+        classroom.courses.courseWork
+          .create({
+            courseId: id,
+            requestBody: {
+              title: question.title,
+              description: question.description,
+              workType: "MULTIPLE_CHOICE_QUESTION",
+              state: "DRAFT",
+              multipleChoiceQuestion: {
+                choices: question.choices,
+              },
+              scheduledTime: timeToISO(question.scheduled_time!),
+              dueDate: question.due_time
+                ? {
+                    day: Number(dueDateTime!.substring(8, 10)),
+                    month: Number(dueDateTime!.substring(5, 7)),
+                    year: Number(dueDateTime!.substring(0, 4)),
+                  }
+                : undefined,
+              dueTime: question.due_time
+                ? {
+                    hours: Number(dueDateTime!.substring(11, 13)),
+                    minutes: Number(dueDateTime!.substring(14, 16)),
+                    seconds: 0,
+                    nanos: 0,
+                  }
+                : undefined,
+              maxPoints: question.max_points,
+              submissionModificationMode: question.submission_modifiable
+                ? "MODIFIABLE"
+                : "MODIFIABLE_UNTIL_TURNED_IN",
             },
-            scheduledTime: timeToISO(question.scheduled_time!),
-            dueDate: question.due_time
-              ? {
-                  day: Number(dueDateTime!.substring(8, 10)),
-                  month: Number(dueDateTime!.substring(5, 7)),
-                  year: Number(dueDateTime!.substring(0, 4)),
-                }
-              : undefined,
-            dueTime: question.due_time
-              ? {
-                  hours: Number(dueDateTime!.substring(11, 13)),
-                  minutes: Number(dueDateTime!.substring(14, 16)),
-                  seconds: 0,
-                  nanos: 0,
-                }
-              : undefined,
-            maxPoints: question.max_points,
-            submissionModificationMode: question.submission_modifiable
-              ? "MODIFIABLE"
-              : "MODIFIABLE_UNTIL_TURNED_IN",
-          },
-        })
-        .then(() =>
-          console.log(
-            `created multiple choice question: ${
-              question.title
-            } for ${timeToISO(question.scheduled_time!)}`
+          })
+          .then(() =>
+            console.log(
+              `created multiple choice question: ${
+                question.title
+              } for ${timeToISO(question.scheduled_time!)}`
+            )
           )
-        )
-        .catch((err) =>
-          console.error(
-            `error when creating multiple choice question: ${
-              question.title
-            } for ${timeToISO(question.scheduled_time!)} \n${err} `
-          )
-        );
-    });
+          .catch((err) =>
+            console.error(
+              `error when creating multiple choice question: ${
+                question.title
+              } for ${timeToISO(question.scheduled_time!)} \n${err} `
+            )
+          );
+      });
+    }
   });
 
   const { rows: saQuestions } = await pool.query<SaQuestionToPost>(`
@@ -117,59 +124,63 @@ export async function postAll() {
 	 `);
 
   saQuestions.forEach(async (question) => {
-    oAuth2Client.setCredentials({
-      refresh_token: question.refresh_token,
-    });
+    if (shouldPostToday(question.posting_days!)) {
+      oAuth2Client.setCredentials({
+        refresh_token: question.refresh_token,
+      });
 
-    const classroom = google.classroom({ version: "v1", auth: oAuth2Client });
+      const classroom = google.classroom({ version: "v1", auth: oAuth2Client });
 
-    const dueDateTime = question.due_time ? timeToISO(question.due_time) : null;
+      const dueDateTime = question.due_time
+        ? timeToISO(question.due_time)
+        : null;
 
-    question.course_ids!.forEach((id) => {
-      classroom.courses.courseWork
-        .create({
-          courseId: id,
-          requestBody: {
-            title: question.title,
-            description: question.description,
-            workType: "SHORT_ANSWER_QUESTION",
-            state: "DRAFT",
-            scheduledTime: timeToISO(question.scheduled_time!),
-            dueDate: question.due_time
-              ? {
-                  day: Number(dueDateTime!.substring(8, 10)),
-                  month: Number(dueDateTime!.substring(5, 7)),
-                  year: Number(dueDateTime!.substring(0, 4)),
-                }
-              : undefined,
-            dueTime: question.due_time
-              ? {
-                  hours: Number(dueDateTime!.substring(11, 13)),
-                  minutes: Number(dueDateTime!.substring(14, 16)),
-                  seconds: 0,
-                  nanos: 0,
-                }
-              : undefined,
-            maxPoints: question.max_points,
-            submissionModificationMode: question.submission_modifiable
-              ? "MODIFIABLE"
-              : "MODIFIABLE_UNTIL_TURNED_IN",
-          },
-        })
-        .then(() =>
-          console.log(
-            `created short answer question: ${question.title} for ${timeToISO(
-              question.scheduled_time!
-            )}`
+      question.course_ids!.forEach((id) => {
+        classroom.courses.courseWork
+          .create({
+            courseId: id,
+            requestBody: {
+              title: question.title,
+              description: question.description,
+              workType: "SHORT_ANSWER_QUESTION",
+              state: "DRAFT",
+              scheduledTime: timeToISO(question.scheduled_time!),
+              dueDate: question.due_time
+                ? {
+                    day: Number(dueDateTime!.substring(8, 10)),
+                    month: Number(dueDateTime!.substring(5, 7)),
+                    year: Number(dueDateTime!.substring(0, 4)),
+                  }
+                : undefined,
+              dueTime: question.due_time
+                ? {
+                    hours: Number(dueDateTime!.substring(11, 13)),
+                    minutes: Number(dueDateTime!.substring(14, 16)),
+                    seconds: 0,
+                    nanos: 0,
+                  }
+                : undefined,
+              maxPoints: question.max_points,
+              submissionModificationMode: question.submission_modifiable
+                ? "MODIFIABLE"
+                : "MODIFIABLE_UNTIL_TURNED_IN",
+            },
+          })
+          .then(() =>
+            console.log(
+              `created short answer question: ${question.title} for ${timeToISO(
+                question.scheduled_time!
+              )}`
+            )
           )
-        )
-        .catch((err) =>
-          console.error(
-            `error when creating short answer question: ${
-              question.title
-            } for ${timeToISO(question.scheduled_time!)} \n${err} `
-          )
-        );
-    });
+          .catch((err) =>
+            console.error(
+              `error when creating short answer question: ${
+                question.title
+              } for ${timeToISO(question.scheduled_time!)} \n${err} `
+            )
+          );
+      });
+    }
   });
 }
