@@ -36,9 +36,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/posts", (req, res) => {
-  if (req.user)
+  if (req.user) {
     res.sendFile(path.join(__dirname, "../", "build", "index.html"));
-  else res.redirect("/auth/login");
+    console.log("req.user on posts route:", req.user);
+  } else res.redirect("/auth/login");
 });
 
 app.use("/auth", authRouter);
