@@ -83,13 +83,13 @@ const CreateAnnouncement: React.FC<Props> = ({
 
   const postMutation = useMutation((newAnnouncement: Announcement) =>
     axios.post(
-      "http://localhost:8080/api/v1/createpost/announcement",
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/createpost/announcement`,
       newAnnouncement
     )
   );
   const editMutation = useMutation((newAnnouncement: Announcement) =>
     axios.put(
-      `http://localhost:8080/api/v1/editpost/announcement/${
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/editpost/announcement/${
         editingAnnouncement!.announcementId
       }`,
       newAnnouncement

@@ -40,7 +40,7 @@ const DescriptionParagraph = () => {
         Easily create automated posts for Google Classroom.
       </Typography>
       <Button
-        href="/auth/login"
+        href={`${process.env.REACT_APP_SERVER_URL}/auth/login`}
         color="primary"
         variant="contained"
         size="large"

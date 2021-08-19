@@ -36,7 +36,7 @@ const Announcements: React.FC<Props> = ({
 
   const mutation = useMutation((_) =>
     axios.delete(
-      `http://localhost:8080/api/v1/deletepost/announcement/${deletingId}`
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/deletepost/announcement/${deletingId}`
     )
   );
 

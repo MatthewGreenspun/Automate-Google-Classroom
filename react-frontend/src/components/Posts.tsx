@@ -59,7 +59,7 @@ const Posts: React.FC<Props> = ({ user }) => {
     "courses",
     async (): Promise<Course[]> => {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/users/courses"
+        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/courses`
       );
       return data;
     }
@@ -72,7 +72,7 @@ const Posts: React.FC<Props> = ({ user }) => {
     "announcements",
     async (): Promise<Announcement[]> => {
       const { data } = await axios.get(
-        "http://localhost:8080/api/v1/users/announcements"
+        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/announcements`
       );
       return data;
     }

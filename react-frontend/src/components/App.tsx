@@ -51,7 +51,9 @@ function App() {
   const { data, isLoading } = useQuery<{ user: User | null }>(
     "user",
     async (): Promise<{ user: User | null }> => {
-      const { data } = await axios.get("http://localhost:8080/api/v1/users/me");
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/api/v1/users/me`
+      );
       return data;
     }
   );

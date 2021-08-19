@@ -67,13 +67,13 @@ const CreateQuestion: React.FC<Props> = ({
 
   const postMutation = useMutation((newQuestion: Question) =>
     axios.post(
-      `http://localhost:8080/api/v1/createpost/${questionOptions.questionType}question`,
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/createpost/${questionOptions.questionType}question`,
       newQuestion
     )
   );
   const editMutation = useMutation((newQuestion: Question) =>
     axios.put(
-      `http://localhost:8080/api/v1/editpost/${
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/editpost/${
         questionOptions.questionType
       }question/${editingQuestion!.questionId}`,
       newQuestion
