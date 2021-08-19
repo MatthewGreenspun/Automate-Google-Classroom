@@ -1,0 +1,1 @@
+mv ../../react-frontend/build .
