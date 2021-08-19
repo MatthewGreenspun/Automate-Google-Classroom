@@ -67,7 +67,7 @@ passport_1.default.deserializeUser(function (id, done) { return __awaiter(void 0
 passport_1.default.use(new passport_google_oauth20_1.Strategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:8080/auth/googlecallback",
+    callbackURL: process.env.CALLBACK_URL,
 }, function (accessToken, refreshToken, profile, done) { return __awaiter(void 0, void 0, void 0, function () {
     var userId;
     var _a, _b;
