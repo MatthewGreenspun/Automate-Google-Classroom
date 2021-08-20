@@ -42,10 +42,9 @@ app.get("/", function (req, res) {
   res.sendFile(path_1.default.join(__dirname, "../", "build", "index.html"));
 });
 app.get("/posts", function (req, res) {
-  if (req.user) {
-    console.log("req.user in posts route:", req.user);
+  if (req.user)
     res.sendFile(path_1.default.join(__dirname, "../", "build", "index.html"));
-  } else res.redirect("/auth/login");
+  else res.redirect("/auth/login");
 });
 app.use("/auth", auth_1.default);
 app.use("/api/v1/users", user_1.default);
