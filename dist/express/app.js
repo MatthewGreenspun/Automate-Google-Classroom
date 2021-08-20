@@ -39,11 +39,10 @@ app.use(
 app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 app.get("/", function (req, res) {
-  res.sendFile(path_1.default.join(__dirname, "../", "build", "index.html"));
+  res.redirect(process.env.FRONTEND_URL);
 });
 app.get("/posts", function (req, res) {
-  if (req.user)
-    res.sendFile(path_1.default.join(__dirname, "../", "build", "index.html"));
+  if (req.user) res.redirect(process.env.FRONTEND_URL + "/posts");
   else res.redirect("/auth/login");
 });
 app.use("/auth", auth_1.default);
