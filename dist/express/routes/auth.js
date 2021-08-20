@@ -28,7 +28,10 @@ router.get(
 );
 router.get(
   "/googlecallback",
-  passport_1.default.authenticate("google", { failureRedirect: "/login" }),
+  passport_1.default.authenticate("google", {
+    failureRedirect: "/login",
+    successRedirect: process.env.FRONTEND_URL + "/posts",
+  }),
   function (req, res) {
     req.session.save(function () {
       res.redirect(process.env.FRONTEND_URL + "/posts");
