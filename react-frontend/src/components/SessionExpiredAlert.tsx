@@ -14,7 +14,12 @@ const SessionExpiredAlert: React.FC<Props> = ({ sessionExpired }) => (
     open={sessionExpired}
     message={"Session expired. You must sign in again. "}
     action={
-      <Button color="primary" onClick={() => window.location.reload()}>
+      <Button
+        color="primary"
+        onClick={() =>
+          (window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/login`)
+        }
+      >
         Reload
       </Button>
     }
