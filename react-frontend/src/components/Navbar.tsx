@@ -60,7 +60,11 @@ const Navbar: React.FC<Props> = ({ user }) => {
           Automate Google Classroom
         </Link>
         {!user && (
-          <Button variant="contained" color="secondary" href="/auth/login">
+          <Button
+            variant="contained"
+            color="secondary"
+            href={`${process.env.REACT_APP_SERVER_URL}/auth/login`}
+          >
             <Avatar
               alt="user profile picture"
               src="/google-logo.png"
