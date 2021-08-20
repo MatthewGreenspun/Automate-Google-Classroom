@@ -92,11 +92,7 @@ const Navbar: React.FC<Props> = ({ user }) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem
-                onClick={() =>
-                  (window.location.href = `${process.env.REACT_APP_SERVER_URL}/posts`)
-                }
-              >
+              <MenuItem onClick={() => (window.location.href = "/posts")}>
                 My posts
               </MenuItem>
               <MenuItem

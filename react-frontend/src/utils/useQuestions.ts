@@ -8,9 +8,8 @@ export function useQuestions() {
     refetch: refetchSa,
   } = useQuery<Question[]>("saquestions", async (): Promise<Question[]> => {
     const { data: saQuestions } = await axios.get(
-      "http://localhost:8080/api/v1/users/saquestions"
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/users/saquestions`
     );
-
     return saQuestions;
   });
 
@@ -20,7 +19,7 @@ export function useQuestions() {
     refetch: refetchMc,
   } = useQuery<Question[]>("mcquestions", async (): Promise<Question[]> => {
     const { data: mcQuestions } = await axios.get(
-      "http://localhost:8080/api/v1/users/mcquestions"
+      `${process.env.REACT_APP_SERVER_URL}/api/v1/users/mcquestions`
     );
     return mcQuestions;
   });
