@@ -32,12 +32,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../", "build", "index.html"));
+  res.redirect(process.env.FRONTEND_URL);
 });
 
 app.get("/posts", (req, res) => {
-  if (req.user)
-    res.sendFile(path.join(__dirname, "../", "build", "index.html"));
+  if (req.user) res.redirect(process.env.FRONTEND_URL + "/posts");
   else res.redirect("/auth/login");
 });
 

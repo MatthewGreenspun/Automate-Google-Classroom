@@ -27,7 +27,7 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     req.session.save(() => {
-      res.redirect(`${process.env.FRONTEND_URL}/posts`);
+      res.redirect(process.env.FRONTEND_URL + "/posts");
     });
   }
 );
