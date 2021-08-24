@@ -184,11 +184,14 @@ const CreateAnnouncement: React.FC<Props> = ({
         editMutation.mutate(newAnnouncement, {
           onSuccess: () => {
             setEditingPostId(null);
-            refetchAnnouncements();
             setCreatingPostType(null);
+            refetchAnnouncements();
           },
         });
-      } else setEditingPostId(null);
+      } else {
+        setEditingPostId(null);
+        setCreatingPostType(null);
+      }
     }
   }
   const classes = useCreatePostStyles();

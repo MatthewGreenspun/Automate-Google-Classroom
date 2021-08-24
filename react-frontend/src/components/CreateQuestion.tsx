@@ -218,7 +218,10 @@ const CreateQuestion: React.FC<Props> = ({
             refetchQuestions();
           },
         });
-      } else setEditingPostId(null);
+      } else {
+        setEditingPostId(null);
+        setCreatingPostType(null);
+      }
     }
   }
 
